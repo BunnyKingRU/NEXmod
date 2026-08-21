@@ -2585,10 +2585,10 @@ void Challenge::InitZombieWaves()
 		//aList[ZOMBIE_ZAMBONI] = true;
 		//aList[ZOMBIE_BOBSLED] = true;
 		//aList[ZOMBIE_DOLPHIN_RIDER] = true;
-		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		//aList[ZOMBIE_JACK_IN_THE_BOX] = true;
 		//aList[ZOMBIE_BALLOON] = true;
 		//aList[ZOMBIE_DIGGER] = true;
-		//aList[ZOMBIE_POGO] = true;
+		aList[ZOMBIE_POGO] = true;
 		//aList[ZOMBIE_YETI] = true;
 		//aList[ZOMBIE_BUNGEE] = true;
 		//aList[ZOMBIE_LADDER] = true;

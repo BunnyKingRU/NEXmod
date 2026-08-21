@@ -2063,6 +2063,7 @@ void Plant::MagnetShroomAttactItem(Zombie* theZombie)
         aMagnetItem->mDestOffsetY = RandRangeFloat(-10.0f, 10.0f);
         aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_LADDER_1 + aDamageIndex);
     }
+    /*
     else if (theZombie->mZombieType == ZombieType::ZOMBIE_POGO)
     {
         theZombie->PogoBreak(16U);
@@ -2076,6 +2077,7 @@ void Plant::MagnetShroomAttactItem(Zombie* theZombie)
         aMagnetItem->mDestOffsetY = RandRangeFloat(-10.0f, 10.0f);
         aMagnetItem->mItemType = theZombie->mHasArm ? MagnetItemType::MAGNET_ITEM_POGO_1 : MagnetItemType::MAGNET_ITEM_POGO_3;
     }
+    */
     /*else if (theZombie->mZombiePhase == ZombiePhase::PHASE_JACK_IN_THE_BOX_RUNNING)
     {
         theZombie->StopZombieSound();
@@ -3965,11 +3967,13 @@ void Plant::DrawMagnetItems(Graphics* g)
             {
                 aImage = IMAGE_REANIM_ZOMBIE_TRASHCAN3;
             }
+            /*
             else if (aMagnetItem->mItemType >= MagnetItemType::MAGNET_ITEM_POGO_1 && aMagnetItem->mItemType <= MagnetItemType::MAGNET_ITEM_POGO_3)
             {
                 aCelCol = (int)aMagnetItem->mItemType - (int)MagnetItemType::MAGNET_ITEM_POGO_1;
                 aImage = IMAGE_ZOMBIEPOGO;
             }
+            */
             else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_LADDER_1)
             {
                 aImage = IMAGE_REANIM_ZOMBIE_LADDER_1;

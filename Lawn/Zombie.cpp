@@ -4239,7 +4239,15 @@ void Zombie::UpdateZombieWalking()
             mZombieType == ZombieType::ZOMBIE_DANCER || 
             mZombieType == ZombieType::ZOMBIE_BACKUP_DANCER || 
             mZombieType == ZombieType::ZOMBIE_BOBSLED || 
-            mZombieType == ZombieType::ZOMBIE_POGO || 
+            mZombiePhase == ZombiePhase::PHASE_POGO_BOUNCING ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_1 ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_2 ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_3 ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_4 ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_5 ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_6 ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_2 ||
+            mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_7 ||
             mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER || 
             mZombieType == ZombieType::ZOMBIE_BALLOON)
         {
@@ -8422,7 +8430,15 @@ bool Zombie::CanBeChilled()
         return false;
 
     if (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING ||
-        mZombieType == ZombieType::ZOMBIE_POGO ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_BOUNCING ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_1 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_2 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_3 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_4 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_5 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_6 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_2 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_7 ||
         mZombiePhase == ZombiePhase::PHASE_DIGGER_RISING ||
         mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE ||
         mZombiePhase == ZombiePhase::PHASE_DIGGER_RISE_WITHOUT_AXE ||
@@ -8546,7 +8562,16 @@ bool Zombie::EffectedByDamage(unsigned int theDamageRangeFlags)
         return true;
     }
 
-    bool underground = mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || mZombieType == ZombieType::ZOMBIE_POGO;
+    bool underground = (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_BOUNCING ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_1 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_2 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_3 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_4 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_5 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_6 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_2 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_7);
     if (TestBit(theDamageRangeFlags, (int)DamageRangeFlags::DAMAGES_UNDERGROUND) && underground)
     {
         return true;
@@ -9103,7 +9128,15 @@ void Zombie::ApplyBurn()
         mZombiePhase == ZombiePhase::PHASE_SNORKEL_INTO_POOL || 
         mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || 
         mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE || 
-        mZombieType == ZombieType::ZOMBIE_POGO ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_BOUNCING ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_1 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_2 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_3 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_4 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_5 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_6 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_2 ||
+        mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_7 ||
         mZombiePhase == ZombiePhase::PHASE_DIGGER_RISING || 
         mZombiePhase == ZombiePhase::PHASE_DIGGER_RISE_WITHOUT_AXE || 
         mZombiePhase == ZombiePhase::PHASE_ZOMBIE_MOWERED || 
