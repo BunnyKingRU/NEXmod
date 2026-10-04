@@ -4606,7 +4606,7 @@ void Zombie::Update()
     }
     //----------------------------------------
 
-    if (mZombieType == ZombieType::ZOMBIE_IMP) {
+    if (mZombieType == ZombieType::ZOMBIE_IMP && mZombiePhase == ZombiePhase::PHASE_ZOMBIE_NORMAL) {
         Plant* aPlant = FindPlantTarget(ZombieAttackType::ATTACKTYPE_CHEW);
         if (aPlant && aPlant != nullptr)
         {

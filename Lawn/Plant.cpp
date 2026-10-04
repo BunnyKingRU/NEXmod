@@ -2790,7 +2790,7 @@ bool Plant::IsUpgradableTo(SeedType theUpgradedType)
 //        Plant* aPlant = mBoard->GetTopPlantAt(mPlantCol, mRow, PlantPriority::TOPPLANT_ONLY_NORMAL_POSITION);
 //        return aPlant == nullptr || aPlant->mSeedType != SeedType::SEED_CATTAIL;
 //    }
-    return true;
+    return false;
 }
 
 //0x4635C0

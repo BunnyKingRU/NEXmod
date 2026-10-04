@@ -2640,7 +2640,7 @@ void Challenge::InitZombieWaves()
 		//aList[ZOMBIE_YETI] = true;
 		//aList[ZOMBIE_BUNGEE] = true;
 		//aList[ZOMBIE_LADDER] = true;
-		aList[ZOMBIE_CATAPULT] = true;
+		//aList[ZOMBIE_CATAPULT] = true;
 		//aList[ZOMBIE_GARGANTUAR] = true;
 		//aList[ZOMBIE_IMP] = true;
 	}
