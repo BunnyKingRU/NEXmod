@@ -72,7 +72,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
 			0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
 		}
 	},
 	{ ZOMBIE_PAIL,
@@ -80,7 +80,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
 			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 1, 0, 1, 1, 0, 1, 0, 1, 1,
-			0, 0, 0, 0, 0, 0, 1, 0, 1, 1,
+			0, 0, 0, 0, 0, 0, 1, 0, 1, 0,
 			0, 1, 0, 0, 0, 0, 0, 0, 1, 1,
 		}
 	},
@@ -90,7 +90,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			1, 1, 0, 0, 1, 0, 0, 0, 0, 0,
 			0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
 		}
 	},
 	{ ZOMBIE_DOOR,
@@ -199,7 +199,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
-			0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
+			0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
 		}
 	},
 	{ ZOMBIE_YETI, {0} },
@@ -218,7 +218,7 @@ ZombieAllowedLevels gZombieAllowedLevels[NUM_ZOMBIE_TYPES] = {  //0x6A35B0
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 1, 1, 1, 0, 1, 0, 1, 1,
+			0, 0, 1, 1, 0, 0, 1, 0, 1, 1,
 		}
 	},
 	{ ZOMBIE_CATAPULT,
@@ -1720,8 +1720,8 @@ void Challenge::UpdateConveyorBelt()
 		aSeedPickArray[4].mWeight = 15;
 		aSeedPickArray[5].mItem = SEED_STARFRUIT;
 		aSeedPickArray[5].mWeight = 25;
-		aSeedPickArray[6].mItem = SEED_DOOMSHROOM;
-		aSeedPickArray[6].mWeight = 5;
+		aSeedPickArray[6].mItem = SEED_TALLNUT;
+		aSeedPickArray[6].mWeight = 10;
 		aSeedPickArray[7].mItem = SEED_PUMPKINSHELL;
 		aSeedPickArray[7].mWeight = 10;
 	}
@@ -2572,7 +2572,7 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_DOLPHIN_RIDER] = true;
 		aList[ZOMBIE_POLEVAULTER] = true;
 	}
-	else if (aGameMode == GAMEMODE_CHALLENGE_TEST_ZOMBIE) {
+	else if (aGameMode == GAMEMODE_CHALLENGE_TEST_POOL) {
 		aList[ZOMBIE_NORMAL] = true;
 		//aList[ZOMBIE_TRAFFIC_CONE] = true;
 		//aList[ZOMBIE_POLEVAULTER] = true;
@@ -2588,11 +2588,59 @@ void Challenge::InitZombieWaves()
 		//aList[ZOMBIE_JACK_IN_THE_BOX] = true;
 		//aList[ZOMBIE_BALLOON] = true;
 		//aList[ZOMBIE_DIGGER] = true;
-		aList[ZOMBIE_POGO] = true;
+		//aList[ZOMBIE_POGO] = true;
 		//aList[ZOMBIE_YETI] = true;
 		//aList[ZOMBIE_BUNGEE] = true;
 		//aList[ZOMBIE_LADDER] = true;
 		//aList[ZOMBIE_CATAPULT] = true;
+		//aList[ZOMBIE_GARGANTUAR] = true;
+		//aList[ZOMBIE_IMP] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_TEST_FOG) {
+		aList[ZOMBIE_NORMAL] = true;
+		//aList[ZOMBIE_TRAFFIC_CONE] = true;
+		//aList[ZOMBIE_POLEVAULTER] = true;
+		//aList[ZOMBIE_PAIL] = true;
+		//aList[ZOMBIE_NEWSPAPER] = true;
+		//aList[ZOMBIE_DOOR] = true;
+		//aList[ZOMBIE_FOOTBALL] = true;
+		//aList[ZOMBIE_DANCER] = true;
+		//aList[ZOMBIE_SNORKEL] = true;
+		//aList[ZOMBIE_ZAMBONI] = true;
+		//aList[ZOMBIE_BOBSLED] = true;
+		//aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		//aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		//aList[ZOMBIE_BALLOON] = true;
+		//aList[ZOMBIE_DIGGER] = true;
+		//aList[ZOMBIE_POGO] = true;
+		//aList[ZOMBIE_YETI] = true;
+		//aList[ZOMBIE_BUNGEE] = true;
+		//aList[ZOMBIE_LADDER] = true;
+		//aList[ZOMBIE_CATAPULT] = true;
+		//aList[ZOMBIE_GARGANTUAR] = true;
+		//aList[ZOMBIE_IMP] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_TEST_ROOF) {
+		aList[ZOMBIE_NORMAL] = true;
+		//aList[ZOMBIE_TRAFFIC_CONE] = true;
+		//aList[ZOMBIE_POLEVAULTER] = true;
+		//aList[ZOMBIE_PAIL] = true;
+		//aList[ZOMBIE_NEWSPAPER] = true;
+		//aList[ZOMBIE_DOOR] = true;
+		//aList[ZOMBIE_FOOTBALL] = true;
+		//aList[ZOMBIE_DANCER] = true;
+		//aList[ZOMBIE_SNORKEL] = true;
+		//aList[ZOMBIE_ZAMBONI] = true;
+		//aList[ZOMBIE_BOBSLED] = true;
+		//aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		//aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		//aList[ZOMBIE_BALLOON] = true;
+		//aList[ZOMBIE_DIGGER] = true;
+		//aList[ZOMBIE_POGO] = true;
+		//aList[ZOMBIE_YETI] = true;
+		//aList[ZOMBIE_BUNGEE] = true;
+		//aList[ZOMBIE_LADDER] = true;
+		aList[ZOMBIE_CATAPULT] = true;
 		//aList[ZOMBIE_GARGANTUAR] = true;
 		//aList[ZOMBIE_IMP] = true;
 	}

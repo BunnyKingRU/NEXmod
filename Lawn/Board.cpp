@@ -990,7 +990,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2:
 	case GameMode::GAMEMODE_UPSELL:
 	case GameMode::GAMEMODE_INTRO:
-	case GameMode::GAMEMODE_CHALLENGE_TEST_ZOMBIE:
+	case GameMode::GAMEMODE_CHALLENGE_TEST_POOL:
 		mBackground = BackgroundType::BACKGROUND_3_POOL;
 		break;
 
@@ -1001,6 +1001,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL:
 	case GameMode::GAMEMODE_CHALLENGE_AIR_RAID:
 	case GameMode::GAMEMODE_CHALLENGE_STORMY_NIGHT:
+	case GameMode::GAMEMODE_CHALLENGE_TEST_FOG:
 		mBackground = BackgroundType::BACKGROUND_4_FOG;
 		break;
 
@@ -1011,6 +1012,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_POGO_PARTY:
 	case GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY:
 	case GameMode::GAMEMODE_CHALLENGE_BUNGEE_BLITZ:
+	case GameMode::GAMEMODE_CHALLENGE_TEST_ROOF:
 		mBackground = BackgroundType::BACKGROUND_5_ROOF;
 		break;
 
@@ -2893,7 +2895,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		return (aNormalPlant || aUnderPlant || aPumpkinPlant) ? PlantingReason::PLANTING_NOT_HERE : PlantingReason::PLANTING_OK;
 	}
 	// 屋顶种植需要花盆
-	if (StageHasRoof() && !aHasFlowerPot && !theSeedType == SeedType::SEED_SPIKEWEED)
+	if (StageHasRoof() && !aHasFlowerPot/* && !theSeedType == SeedType::SEED_SPIKEWEED*/)
 	{
 		return PlantingReason::PLANTING_NEEDS_POT;
 	}
@@ -7535,6 +7537,10 @@ void Board::UpdateFog()
 			ClearFogAroundPlant(aPlant, 4);
 		}
 		else if (aPlant->mSeedType == SeedType::SEED_TORCHWOOD)
+		{
+			ClearFogAroundPlant(aPlant, 4);
+		}
+		else if (aPlant) 
 		{
 			ClearFogAroundPlant(aPlant, 1);
 		}

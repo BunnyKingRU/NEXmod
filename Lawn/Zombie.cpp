@@ -1460,6 +1460,8 @@ bool Zombie::IsBouncingPogo()
 //0x525480
 void Zombie::UpdateZombiePogo()
 {
+    //PogoBreak(0U);
+
     if (IsDeadOrDying() || IsImmobilizied() || !IsBouncingPogo() || mZombieHeight == ZombieHeight::HEIGHT_IN_TO_CHIMNEY)
         return;
 
@@ -1508,7 +1510,59 @@ void Zombie::UpdateZombiePogo()
     if (mZombiePhase == ZombiePhase::PHASE_POGO_FORWARD_BOUNCE_2 && mPhaseCounter == 70)
     {
         Plant* aPlant = FindPlantTarget(ZombieAttackType::ATTACKTYPE_VAULT);
-        if (aPlant && aPlant->mSeedType == SeedType::SEED_TALLNUT)
+        if (aPlant && 
+                (
+                    aPlant->mSeedType == SeedType::SEED_PEASHOOTER ||
+                    aPlant->mSeedType == SeedType::SEED_SUNFLOWER ||
+                    aPlant->mSeedType == SeedType::SEED_CHERRYBOMB ||
+                    aPlant->mSeedType == SeedType::SEED_WALLNUT ||
+                    aPlant->mSeedType == SeedType::SEED_POTATOMINE ||
+                    aPlant->mSeedType == SeedType::SEED_SNOWPEA ||
+                    aPlant->mSeedType == SeedType::SEED_CHOMPER ||
+                    aPlant->mSeedType == SeedType::SEED_REPEATER ||
+                    aPlant->mSeedType == SeedType::SEED_PUFFSHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_SUNSHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_FUMESHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_GRAVEBUSTER ||
+                    aPlant->mSeedType == SeedType::SEED_HYPNOSHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_SCAREDYSHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_ICESHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_DOOMSHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_LILYPAD ||
+                    aPlant->mSeedType == SeedType::SEED_INSTANT_COFFEE ||
+                    aPlant->mSeedType == SeedType::SEED_THREEPEATER ||
+                    aPlant->mSeedType == SeedType::SEED_TANGLEKELP ||
+                    aPlant->mSeedType == SeedType::SEED_JALAPENO ||
+                    aPlant->mSeedType == SeedType::SEED_SPIKEWEED ||
+                    aPlant->mSeedType == SeedType::SEED_TORCHWOOD ||
+                    aPlant->mSeedType == SeedType::SEED_TALLNUT ||
+                    aPlant->mSeedType == SeedType::SEED_SEASHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_PLANTERN ||
+                    aPlant->mSeedType == SeedType::SEED_CACTUS ||
+                    aPlant->mSeedType == SeedType::SEED_BLOVER ||
+                    aPlant->mSeedType == SeedType::SEED_LEFTPEATER ||
+                    aPlant->mSeedType == SeedType::SEED_STARFRUIT ||
+                    aPlant->mSeedType == SeedType::SEED_PUMPKINSHELL ||
+                    aPlant->mSeedType == SeedType::SEED_MAGNETSHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_CABBAGEPULT ||
+                    aPlant->mSeedType == SeedType::SEED_FLOWERPOT ||
+                    aPlant->mSeedType == SeedType::SEED_KERNELPULT ||
+                    aPlant->mSeedType == SeedType::SEED_SQUASH ||
+                    aPlant->mSeedType == SeedType::SEED_GARLIC ||
+                    aPlant->mSeedType == SeedType::SEED_UMBRELLA ||
+                    aPlant->mSeedType == SeedType::SEED_MARIGOLD ||
+                    aPlant->mSeedType == SeedType::SEED_MELONPULT ||
+                    aPlant->mSeedType == SeedType::SEED_GATLINGPEA ||
+                    aPlant->mSeedType == SeedType::SEED_TWINSUNFLOWER ||
+                    aPlant->mSeedType == SeedType::SEED_GLOOMSHROOM ||
+                    aPlant->mSeedType == SeedType::SEED_CATTAIL ||
+                    aPlant->mSeedType == SeedType::SEED_WINTERMELON ||
+                    aPlant->mSeedType == SeedType::SEED_GOLD_MAGNET ||
+                    aPlant->mSeedType == SeedType::SEED_SPIKEROCK ||
+                    aPlant->mSeedType == SeedType::SEED_COBCANNON ||
+                    aPlant->mSeedType == SeedType::SEED_IMITATER
+                )
+            )
         {
             mApp->PlayFoley(FoleyType::FOLEY_BONK);
 
@@ -1660,8 +1714,8 @@ void Zombie::UpdateZombieCatapult()
         if (aPlant)
         {
             mZombiePhase = ZombiePhase::PHASE_CATAPULT_LAUNCHING;
-            mPhaseCounter = 300;
-            PlayZombieReanim("anim_shoot", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 1.0f);
+            mPhaseCounter = 200;
+            PlayZombieReanim("anim_shoot", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 20, 100.0f);
         }
         else
         {
@@ -4235,7 +4289,7 @@ void Zombie::UpdateZombieWalking()
     {
         bool doWalk = false;
         if (mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_IN_VAULT || 
-            mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || 
+            //mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || 
             mZombieType == ZombieType::ZOMBIE_DANCER || 
             mZombieType == ZombieType::ZOMBIE_BACKUP_DANCER || 
             mZombieType == ZombieType::ZOMBIE_BOBSLED || 
@@ -6579,7 +6633,7 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
     if (mZombiePhase == ZombiePhase::PHASE_LADDER_CARRYING || mZombiePhase == ZombiePhase::PHASE_LADDER_PLACING)
     {
         bool aPlaceLadder = false;
-        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL)
+        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL || thePlant->mSeedType == SeedType::SEED_CHOMPER)
         {
             aPlaceLadder = true;
         }
@@ -6640,7 +6694,7 @@ Plant* Zombie::FindPlantTarget(ZombieAttackType theAttackType)
 //0x52E840
 Zombie* Zombie::FindZombieTarget()
 {
-    if (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || mZombieType == ZombieType::ZOMBIE_POGO)
+    if (/*mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || */mZombieType == ZombieType::ZOMBIE_POGO)
         return nullptr;
 
     Rect aAttackRect = GetZombieAttackRect();
@@ -6649,7 +6703,7 @@ Zombie* Zombie::FindZombieTarget()
     while (mBoard->IterateZombies(aZombie))
     {
         if (mMindControlled != aZombie->mMindControlled && 
-            aZombie->mZombiePhase != ZombiePhase::PHASE_DIGGER_TUNNELING && 
+            //aZombie->mZombiePhase != ZombiePhase::PHASE_DIGGER_TUNNELING && 
             aZombie->mZombieType != ZombieType::ZOMBIE_POGO &&
             aZombie->mZombiePhase != ZombiePhase::PHASE_BUNGEE_DIVING && 
             aZombie->mZombiePhase != ZombiePhase::PHASE_BUNGEE_DIVING_SCREAMING && 
@@ -7052,6 +7106,9 @@ void Zombie::StopEating()
     mIsEating = false;
     Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
 
+    if (mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER)
+        return;
+
     if (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING)
         return;
 
@@ -7345,9 +7402,12 @@ void Zombie::EatPlant(Plant* thePlant)
     if (mZombieType == ZombieType::ZOMBIE_FOOTBALL) {
         thePlant->mPlantHealth -= DAMAGE_PER_EAT_ZOMBIE_FOOTBALL;
     }
-    else if (mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX) {
+    else if (mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX || mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER) {
         thePlant->mPlantHealth -= DAMAGE_PER_EAT_ZOMBIE_JACK_IN_THE_BOX;
     }
+    //else if (mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER) {
+    //    return;
+    //}
     else {
         thePlant->mPlantHealth -= DAMAGE_PER_EAT;
     }
@@ -8537,9 +8597,9 @@ bool Zombie::EffectedByDamage(unsigned int theDamageRangeFlags)
 
     if (mZombiePhase == ZombiePhase::PHASE_POLEVAULTER_IN_VAULT || 
         mZombiePhase == ZombiePhase::PHASE_IMP_GETTING_THROWN || 
-        mZombiePhase == ZombiePhase::PHASE_DIGGER_RISING || 
-        mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE || 
-        mZombiePhase == ZombiePhase::PHASE_DIGGER_RISE_WITHOUT_AXE || 
+        //mZombiePhase == ZombiePhase::PHASE_DIGGER_RISING || 
+        //mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE || 
+        //mZombiePhase == ZombiePhase::PHASE_DIGGER_RISE_WITHOUT_AXE || 
         mZombiePhase == ZombiePhase::PHASE_DOLPHIN_INTO_POOL || 
         mZombiePhase == ZombiePhase::PHASE_DOLPHIN_IN_JUMP || 
         mZombiePhase == ZombiePhase::PHASE_SNORKEL_INTO_POOL || 
@@ -8562,7 +8622,7 @@ bool Zombie::EffectedByDamage(unsigned int theDamageRangeFlags)
         return true;
     }
 
-    bool underground = (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING ||
+    bool underground = (//mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING ||
         mZombiePhase == ZombiePhase::PHASE_POGO_BOUNCING ||
         mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_1 ||
         mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_2 ||
@@ -9126,8 +9186,8 @@ void Zombie::ApplyBurn()
         mZombiePhase == ZombiePhase::PHASE_DOLPHIN_IN_JUMP || 
         mZombiePhase == ZombiePhase::PHASE_DOLPHIN_RIDING || 
         mZombiePhase == ZombiePhase::PHASE_SNORKEL_INTO_POOL || 
-        mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || 
-        mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE || 
+        //mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING || 
+        //mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE || 
         mZombiePhase == ZombiePhase::PHASE_POGO_BOUNCING ||
         mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_1 ||
         mZombiePhase == ZombiePhase::PHASE_POGO_HIGH_BOUNCE_2 ||

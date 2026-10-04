@@ -700,11 +700,11 @@ void GameSelector::Update()
 		{
 			mApp->KillGameSelector();
 
-			if (mApp->IsIceDemo())
-			{
-				mApp->PreNewGame(GameMode::GAMEMODE_CHALLENGE_ICE, false);
-				return;
-			}
+			//if (mApp->IsIceDemo())
+			//{
+			//	mApp->PreNewGame(GameMode::GAMEMODE_CHALLENGE_ICE, false);
+			//	return;
+			//}
 			if (mApp->IsFirstTimeAdventureMode() && mLevel == 0 && mApp->SaveFileExists())
 			{
 				mApp->PreNewGame(GameMode::GAMEMODE_INTRO, false);

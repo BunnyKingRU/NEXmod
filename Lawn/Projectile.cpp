@@ -525,10 +525,10 @@ void Projectile::UpdateLobMotion()
 	}
 
 	mVelZ += mAccZ;
-	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY)
-	{
-		mVelZ += mAccZ;
-	}
+	//if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY)
+	//{
+	//	mVelZ += mAccZ;
+	//}
 	mPosX += mVelX;
 	mPosY += mVelY;
 	mPosZ += mVelZ;
@@ -718,19 +718,19 @@ void Projectile::UpdateNormalMotion()
 		mPosX += 3.33f;
 	}
 
-	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY)
-	{
-		if (mMotionType == ProjectileMotion::MOTION_FLOAT_OVER)
-		{
-			mVelZ += 0.004f;
-		}
-		else
-		{
-			mVelZ += 0.2f;
-		}
+	//if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY)
+	//{
+	//	if (mMotionType == ProjectileMotion::MOTION_FLOAT_OVER)
+	//	{
+	//		mVelZ += 0.004f;
+	//	}
+	//	else
+	//	{
+	//		mVelZ += 0.2f;
+	//	}
 
-		mPosY += mVelZ;
-	}
+	//	mPosY += mVelZ;
+	//}
 
 	CheckForCollision();
 	CheckForHighGround();

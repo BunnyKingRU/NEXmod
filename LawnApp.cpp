@@ -480,7 +480,13 @@ void LawnApp::NewGame()
 	ShowSeedChooserScreen();
 	mBoard->mCutScene->StartLevelIntro();
 
-	if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_ZOMBIE) {
+	if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_POOL) {
+		mEasyPlantingCheat = true;
+	}
+	else if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_FOG) {
+		mEasyPlantingCheat = true;
+	}
+	else if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_ROOF) {
 		mEasyPlantingCheat = true;
 	}
 }
