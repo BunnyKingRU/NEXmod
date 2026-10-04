@@ -1235,6 +1235,9 @@ void Zombie::PickRandomSpeed()
     else if (mZombieType == ZombieType::ZOMBIE_CATAPULT) {
         mVelX = 10.0f;
     }
+    else if (mZombieType == ZombieType::ZOMBIE_PAIL) {
+        mVelX = 0.18f;
+    }
     else
     {
         mVelX = RandRangeFloat(0.23f, 0.32f);
@@ -8382,7 +8385,7 @@ void Zombie::TakeDamage(int theDamage, unsigned int theDamageFlags)
     if (this == nullptr) 
         return;
 
-    if (mIsScaredy) {
+    if (mIsScaredy && ZombieType::ZOMBIE_ZAMBONI) {
         float plusDamage;
         plusDamage = theDamage;
         plusDamage *= 1.75f;

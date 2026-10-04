@@ -1017,6 +1017,7 @@ void Board::PickBackground()
 		break;
 
 	case GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS:
+	case GameMode::GAMEMODE_CHALLENGE_NIGHT_ROOF:
 		mBackground = BackgroundType::BACKGROUND_6_BOSS;
 		break;
 

@@ -14,7 +14,7 @@
 ProjectileDefinition gProjectileDefinition[] = {  //0x69F1C0
 	{ ProjectileType::PROJECTILE_PEA,           0,  20  },
 	{ ProjectileType::PROJECTILE_SNOWPEA,       0,  20  },
-	{ ProjectileType::PROJECTILE_CABBAGE,       0,  40  },
+	{ ProjectileType::PROJECTILE_CABBAGE,       0,  80  },
 	{ ProjectileType::PROJECTILE_MELON,         0,  80  },
 	{ ProjectileType::PROJECTILE_PUFF,          0,  15  },
 	{ ProjectileType::PROJECTILE_WINTERMELON,   0,  80  },
@@ -865,7 +865,7 @@ void Projectile::DoImpact(Zombie* theZombie)
 			}
 		}
 		else if (mProjectileType == ProjectileType::PROJECTILE_SCARDY_PUFF) {
-			theZombie->TakeDamage(GetProjectileDef().mDamage, aDamageFlags);
+			//theZombie->TakeDamage(GetProjectileDef().mDamage, aDamageFlags);
 			theZombie->mIsScaredy = true;
 			theZombie->EffectScaredy();
 		}

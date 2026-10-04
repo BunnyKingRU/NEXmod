@@ -2592,7 +2592,7 @@ void Challenge::InitZombieWaves()
 		//aList[ZOMBIE_YETI] = true;
 		//aList[ZOMBIE_BUNGEE] = true;
 		//aList[ZOMBIE_LADDER] = true;
-		//aList[ZOMBIE_CATAPULT] = true;
+		aList[ZOMBIE_CATAPULT] = true;
 		//aList[ZOMBIE_GARGANTUAR] = true;
 		//aList[ZOMBIE_IMP] = true;
 	}
@@ -2643,6 +2643,14 @@ void Challenge::InitZombieWaves()
 		//aList[ZOMBIE_CATAPULT] = true;
 		//aList[ZOMBIE_GARGANTUAR] = true;
 		//aList[ZOMBIE_IMP] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_NIGHT_ROOF)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_DIGGER] = true;
+		aList[ZOMBIE_DANCER] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_POGO_PARTY)
 	{
