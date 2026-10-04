@@ -489,6 +489,9 @@ void LawnApp::NewGame()
 	else if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_ROOF) {
 		mEasyPlantingCheat = true;
 	}
+	else {
+		mEasyPlantingCheat = false;
+	}
 }
 
 //0x44F8E0

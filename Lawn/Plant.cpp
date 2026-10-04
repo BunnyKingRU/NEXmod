@@ -2757,40 +2757,40 @@ bool Plant::IsPartOfUpgradableTo(SeedType theUpgradedType)
 //0x463470
 bool Plant::IsUpgradableTo(SeedType theUpgradedType)
 {
-    if (theUpgradedType == SeedType::SEED_GATLINGPEA && mSeedType == SeedType::SEED_REPEATER)
-    {
-        return true;
-    }
-    if (theUpgradedType == SeedType::SEED_WINTERMELON && mSeedType == SeedType::SEED_MELONPULT)
-    {
-        return true;
-    }
-    if (theUpgradedType == SeedType::SEED_TWINSUNFLOWER && mSeedType == SeedType::SEED_SUNFLOWER)
-    {
-        return true;
-    }
-    if (theUpgradedType == SeedType::SEED_SPIKEROCK && mSeedType == SeedType::SEED_SPIKEWEED)
-    {
-        return true;
-    }
-    if (theUpgradedType == SeedType::SEED_COBCANNON && mSeedType == SeedType::SEED_KERNELPULT)
-    {
-        return mBoard->IsValidCobCannonSpot(mPlantCol, mRow);
-    }
-    if (theUpgradedType == SeedType::SEED_GOLD_MAGNET && mSeedType == SeedType::SEED_MAGNETSHROOM)
-    {
-        return true;
-    }
-    if (theUpgradedType == SeedType::SEED_GLOOMSHROOM && mSeedType == SeedType::SEED_FUMESHROOM)
-    {
-        return true;
-    }
-    if (theUpgradedType == SeedType::SEED_CATTAIL && mSeedType == SeedType::SEED_LILYPAD)
-    {
-        Plant* aPlant = mBoard->GetTopPlantAt(mPlantCol, mRow, PlantPriority::TOPPLANT_ONLY_NORMAL_POSITION);
-        return aPlant == nullptr || aPlant->mSeedType != SeedType::SEED_CATTAIL;
-    }
-    return false;
+//    if (theUpgradedType == SeedType::SEED_GATLINGPEA && mSeedType == SeedType::SEED_REPEATER)
+//    {
+//        return true;
+//    }
+//    if (theUpgradedType == SeedType::SEED_WINTERMELON && mSeedType == SeedType::SEED_MELONPULT)
+//    {
+//        return true;
+//    }
+//    if (theUpgradedType == SeedType::SEED_TWINSUNFLOWER && mSeedType == SeedType::SEED_SUNFLOWER)
+//    {
+//        return true;
+//    }
+//    if (theUpgradedType == SeedType::SEED_SPIKEROCK && mSeedType == SeedType::SEED_SPIKEWEED)
+//    {
+//        return true;
+//    }
+//    if (theUpgradedType == SeedType::SEED_COBCANNON && mSeedType == SeedType::SEED_KERNELPULT)
+//    {
+//        return mBoard->IsValidCobCannonSpot(mPlantCol, mRow);
+//    }
+//    if (theUpgradedType == SeedType::SEED_GOLD_MAGNET && mSeedType == SeedType::SEED_MAGNETSHROOM)
+//    {
+//        return true;
+//    }
+//    if (theUpgradedType == SeedType::SEED_GLOOMSHROOM && mSeedType == SeedType::SEED_FUMESHROOM)
+//    {
+//        return true;
+//    }
+//    if (theUpgradedType == SeedType::SEED_CATTAIL && mSeedType == SeedType::SEED_LILYPAD)
+//    {
+//        Plant* aPlant = mBoard->GetTopPlantAt(mPlantCol, mRow, PlantPriority::TOPPLANT_ONLY_NORMAL_POSITION);
+//        return aPlant == nullptr || aPlant->mSeedType != SeedType::SEED_CATTAIL;
+//    }
+    return true;
 }
 
 //0x4635C0
@@ -5367,15 +5367,16 @@ bool Plant::IsFlying(SeedType theSeedtype)
 //0x467EC0
 bool Plant::IsUpgrade(SeedType theSeedtype)
 {
-    return 
-        theSeedtype == SeedType::SEED_GATLINGPEA || 
-        theSeedtype == SeedType::SEED_WINTERMELON || 
-        theSeedtype == SeedType::SEED_TWINSUNFLOWER || 
-        theSeedtype == SeedType::SEED_SPIKEROCK || 
-        theSeedtype == SeedType::SEED_COBCANNON || 
-        theSeedtype == SeedType::SEED_GOLD_MAGNET || 
-        theSeedtype == SeedType::SEED_GLOOMSHROOM || 
-        theSeedtype == SeedType::SEED_CATTAIL;
+
+    return false;
+    //    theSeedtype == SeedType::SEED_GATLINGPEA || 
+    //    theSeedtype == SeedType::SEED_WINTERMELON || 
+    //    theSeedtype == SeedType::SEED_TWINSUNFLOWER || 
+    //    theSeedtype == SeedType::SEED_SPIKEROCK || 
+    //    theSeedtype == SeedType::SEED_COBCANNON || 
+    //    theSeedtype == SeedType::SEED_GOLD_MAGNET || 
+    //    theSeedtype == SeedType::SEED_GLOOMSHROOM || 
+    //    theSeedtype == SeedType::SEED_CATTAIL;
 }
 
 //0x467EF0
