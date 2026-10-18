@@ -128,6 +128,9 @@ LawnApp::LawnApp()
 	mFirstTimeGameSelector = true;
 	mGameMode = GameMode::GAMEMODE_ADVENTURE;
 	mEasyPlantingCheat = false;
+
+
+
 	mAutoEnable3D = true;
 	Tod_SWTri_AddAllDrawTriFuncs();
 	mLoadingZombiesThreadCompleted = true;
@@ -479,19 +482,6 @@ void LawnApp::NewGame()
 
 	ShowSeedChooserScreen();
 	mBoard->mCutScene->StartLevelIntro();
-
-	if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_POOL) {
-		mEasyPlantingCheat = true;
-	}
-	else if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_FOG) {
-		mEasyPlantingCheat = true;
-	}
-	else if (mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_ROOF) {
-		mEasyPlantingCheat = true;
-	}
-	else {
-		mEasyPlantingCheat = false;
-	}
 }
 
 //0x44F8E0
