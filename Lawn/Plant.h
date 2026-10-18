@@ -200,6 +200,7 @@ public:
     bool                    mIsAsleep;                      //+0x143
     bool                    mIsOnBoard;                     //+0x144
     bool                    mHighlighted;                   //+0x145
+    bool                    mGBEatGraveStone;
 
 public:
     Plant();
@@ -272,6 +273,7 @@ public:
     void                    UpdateBowling();
     void                    AnimatePumpkin();
     void                    UpdateBlover();
+    void                    ExplodeONutExplode();
     void                    UpdateCactus();
     void                    StarFruitFire();
     void                    UpdateTanglekelp();

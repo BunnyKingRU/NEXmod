@@ -17,6 +17,8 @@
 #include "../Sexy.TodLib/Attachment.h"
 #include "../Sexy.TodLib/TodParticle.h"
 
+
+
 ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_NORMAL,            REANIM_ZOMBIE,              1,      1,      1,      4000,   _S("ZOMBIE") ,0 },
     { ZOMBIE_FLAG,              REANIM_ZOMBIE,              1,      1,      1,      0,      _S("FLAG_ZOMBIE") ,0 },
@@ -52,7 +54,8 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_TALLNUT_HEAD,      REANIM_ZOMBIE,              4,      99,     10,     2000,   _S("TALLNUT_ZOMBIE") ,1 },
     { ZOMBIE_REDEYE_GARGANTUAR, REANIM_GARGANTUAR,          10,     48,     15,     6000,   _S("REDEYED_GARGANTUAR") ,1 },
     { ZOMBIE_TRASHCAN,          REANIM_ZOMBIE,              3,      99,     5,      3500,   _S("TRASH_CAN_ZOMBIE") ,1 },
-    { ZOMBIE_GIGA_FOOTBALL,     REANIM_ZOMBIE_GIGA_FOOTBALL, 9,     99,     5,      1500,   _S("GIGA_FOOTBALL_ZOMBIE") ,1 },
+    { ZOMBIE_GIGA_FOOTBALL,     REANIM_ZOMBIE_GIGA_FOOTBALL,9,      99,     5,      1500,   _S("GIGA_FOOTBALL_ZOMBIE") ,1 },
+    { ZOMBIE_ICE_YETI,          REANIM_YETI,                2,      99,     1,      4000,   _S("ZOMBIE_ICE_YETI") ,0 },
 };
 
 static ZombieType gBossZombieList[] = {  //0x69DE1C
@@ -71,6 +74,7 @@ static ZombieType gBossZombieList[] = {  //0x69DE1C
     ZombieType::ZOMBIE_GIGA_FOOTBALL,
     ZombieType::ZOMBIE_GARGANTUAR
 };
+
 
 ZombieDefinition& GetZombieDefinition(ZombieType theZombieType)
 {
@@ -224,12 +228,14 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         AttachShield();
         break;
 
+    case ZombieType::ZOMBIE_ICE_YETI:
     case ZombieType::ZOMBIE_YETI:  //0x522963
         mBodyHealth = 1350;
         mPhaseCounter = RandRangeInt(1500, 2000);
         mHasObject = true;
         mZombieAttackRect = Rect(20, 0, 50, 115);
         break;
+
 
     case ZombieType::ZOMBIE_LADDER:  //0x52299B
         mBodyHealth = 500;
@@ -1195,7 +1201,7 @@ void Zombie::PickRandomSpeed()
     {
         mVelX = 0.8f;
     }
-    else if (mZombieType == ZombieType::ZOMBIE_YETI)
+    else if (mZombieType == ZombieType::ZOMBIE_YETI || mZombieType == ZombieType::ZOMBIE_ICE_YETI)
     {
         mVelX = 0.4f;
     }
@@ -3716,7 +3722,7 @@ void Zombie::DropHead(unsigned int theDamageFlags)
         {
             aParticle->OverrideImage(nullptr, IMAGE_ZOMBIEDOLPHINRIDERHEAD);
         }
-        else if (mZombieType == ZombieType::ZOMBIE_YETI)
+        else if (mZombieType == ZombieType::ZOMBIE_YETI || mZombieType == ZombieType::ZOMBIE_ICE_YETI)
         {
             aParticle->OverrideImage(nullptr, IMAGE_ZOMBIEYETIHEAD);
         }
@@ -3885,6 +3891,7 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
             GetTrackPosition("Zombie_outerarm_hand", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_ladder_outerarm_upper", IMAGE_REANIM_ZOMBIE_LADDER_OUTERARM_UPPER2);
             break;
+        case ZombieType::ZOMBIE_ICE_YETI:
         case ZombieType::ZOMBIE_YETI:
             GetTrackPosition("Zombie_outerarm_hand", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_yeti_outerarm_upper", IMAGE_REANIM_ZOMBIE_YETI_OUTERARM_UPPER2);
@@ -3933,6 +3940,7 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
             case ZombieType::ZOMBIE_IMP:
                 aParticle->OverrideImage(nullptr, IMAGE_REANIM_ZOMBIE_IMP_ARM2);
                 break;
+            case ZombieType::ZOMBIE_ICE_YETI:
             case ZombieType::ZOMBIE_YETI:
                 aParticle->OverrideImage(nullptr, IMAGE_REANIM_ZOMBIE_YETI_OUTERARM_HAND);
                 break;
@@ -4506,7 +4514,6 @@ void Zombie::Update()
             }
             mDelayHypnoEffect = 10;
 
-            ApplyInfinityChill(999999);
             UpdateAnimSpeed();
         }
 
@@ -4906,7 +4913,7 @@ void Zombie::UpdatePlaying()
         if (isDying)
         {
             int aDamage = 1;
-            if (mZombieType == ZombieType::ZOMBIE_YETI)
+            if (mZombieType == ZombieType::ZOMBIE_YETI || mZombieType == ZombieType::ZOMBIE_ICE_YETI)
             {
                 aDamage = 10;
             }
@@ -5348,7 +5355,9 @@ bool Zombie::IsWalkingBackwards()
         return false;
     }
 
-    return mZombieType == ZombieType::ZOMBIE_YETI && !mHasObject;
+    //-----------------------------------------------------------YETI WALK BACK-------------------------------------------------
+
+    return (mZombieType == ZombieType::ZOMBIE_YETI) && !mHasObject;
 }
 
 //0x52BF60
@@ -6221,6 +6230,7 @@ void Zombie::GetDrawPos(ZombieDrawPosition& theDrawPos)
     case ZombieType::ZOMBIE_GIGA_FOOTBALL:
         theDrawPos.mImageOffsetY -= 16.0f;
         break;
+    case ZombieType::ZOMBIE_ICE_YETI:
     case ZombieType::ZOMBIE_YETI:
         theDrawPos.mImageOffsetY -= 20.0f;
         break;
@@ -6636,7 +6646,7 @@ bool Zombie::CanTargetPlant(Plant* thePlant, ZombieAttackType theAttackType)
     if (mZombiePhase == ZombiePhase::PHASE_LADDER_CARRYING || mZombiePhase == ZombiePhase::PHASE_LADDER_PLACING)
     {
         bool aPlaceLadder = false;
-        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL || thePlant->mSeedType == SeedType::SEED_CHOMPER)
+        if (thePlant->mSeedType == SeedType::SEED_WALLNUT || thePlant->mSeedType == SeedType::SEED_EXPLODE_O_NUT || thePlant->mSeedType == SeedType::SEED_TALLNUT || thePlant->mSeedType == SeedType::SEED_PUMPKINSHELL || thePlant->mSeedType == SeedType::SEED_CHOMPER)
         {
             aPlaceLadder = true;
         }
@@ -6968,7 +6978,7 @@ void Zombie::UpdateAnimSpeed()
     {
         if (mZombieType == ZombieType::ZOMBIE_POLEVAULTER || mZombieType == ZombieType::ZOMBIE_BALLOON || mZombieType == ZombieType::ZOMBIE_IMP || 
             mZombieType == ZombieType::ZOMBIE_DIGGER || mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX || mZombieType == ZombieType::ZOMBIE_SNORKEL || 
-            mZombieType == ZombieType::ZOMBIE_YETI)
+            mZombieType == ZombieType::ZOMBIE_YETI || mZombieType == ZombieType::ZOMBIE_ICE_YETI)
         {
             ApplyAnimRate(20.0f);
         }
@@ -7431,6 +7441,11 @@ void Zombie::EatPlant(Plant* thePlant)
         if (thePlant->mSeedType == SeedType::SEED_MARIGOLD) 
         {
             mIsEatingsMarigold = true;
+            ApplyMarigoldChill(2000);
+            UpdateAnimSpeed();
+        }
+        else if (thePlant->mSeedType == SeedType::SEED_EXPLODE_O_NUT) {
+            thePlant->ExplodeONutExplode();
         }
         thePlant->Die();
         mBoard->mChallenge->ZombieAtePlant(this, thePlant);
@@ -7603,8 +7618,10 @@ void Zombie::DropLoot()
     if (!IsOnBoard())
         return;
 
+    
+
     AlmanacPlayerDefeatedZombie(mZombieType);
-    if (mZombieType == ZombieType::ZOMBIE_YETI)
+    if (mZombieType == ZombieType::ZOMBIE_YETI || mZombieType == ZombieType::ZOMBIE_ICE_YETI)
     {
         mBoard->mKilledYeti = true;
     }
@@ -7627,6 +7644,9 @@ void Zombie::DropLoot()
     Rect aZombieRect = GetZombieRect();
     int aCenterX = aZombieRect.mX + aZombieRect.mWidth / 2;
     int aCenterY = aZombieRect.mY + aZombieRect.mHeight / 4;
+
+    //-------------------------------------YETI DROP DIAMONDS------------------------------------------------------------
+
     if (mZombieType == ZombieType::ZOMBIE_YETI)
     {
         mApp->PlayFoley(FoleyType::FOLEY_SPAWN_SUN);
@@ -7869,13 +7889,14 @@ void Zombie::ApplyChill(bool theIsIceTrap)
     UpdateAnimSpeed();
 }
 
-void Zombie::ApplyInfinityChill(int theChillTime)
+void Zombie::ApplyMarigoldChill(int theChillTime)
 {
     if (!CanBeChilled())
         return;
 
     if (mChilledCounter == 0)
     {
+        mApp->AddTodParticle(mPosX + 60.0f, mPosY + 40.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_MIND_CONTROL);
         mApp->PlayFoley(FoleyType::FOLEY_FROZEN);
     }
 
@@ -9076,7 +9097,8 @@ void Zombie::MowDown()
         mZombieType == ZombieType::ZOMBIE_BUNGEE || 
         mZombieType == ZombieType::ZOMBIE_DIGGER || 
         mZombieType == ZombieType::ZOMBIE_IMP || 
-        mZombieType == ZombieType::ZOMBIE_YETI || 
+        mZombieType == ZombieType::ZOMBIE_YETI ||
+        mZombieType == ZombieType::ZOMBIE_ICE_YETI ||
         mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER || 
         IsBobsledTeamWithSled() || 
         IsFlying() || 
@@ -9207,7 +9229,7 @@ void Zombie::ApplyBurn()
     {
         DieWithLoot();
     }
-    else if (mZombieType == ZOMBIE_BUNGEE || mZombieType == ZOMBIE_YETI || Zombie::IsZombotany(mZombieType) || IsBobsledTeamWithSled() || IsFlying() || !mHasHead)
+    else if (mZombieType == ZOMBIE_BUNGEE || mZombieType == ZOMBIE_YETI || mZombieType == ZOMBIE_ICE_YETI || Zombie::IsZombotany(mZombieType) || IsBobsledTeamWithSled() || IsFlying() || !mHasHead)
     {
         SetAnimRate(0.0f);
         Reanimation* aHeadReanim = mApp->ReanimationTryToGet(mSpecialHeadReanimID);
@@ -9503,7 +9525,7 @@ void Zombie::PlayDeathAnim(unsigned int theDamageFlags)
     {
         aDeathAnimRate = 18.0f;
     }
-    else if (mZombieType == ZombieType::ZOMBIE_YETI)
+    else if (mZombieType == ZombieType::ZOMBIE_YETI || mZombieType == ZombieType::ZOMBIE_ICE_YETI)
     {
         aDeathAnimRate = 14.0f;
     }
@@ -9688,6 +9710,7 @@ void Zombie::UpdateDeath()
             aFallTime = 0.84f;
             break;
 
+        case ZombieType::ZOMBIE_ICE_YETI:
         case ZombieType::ZOMBIE_YETI:
             aFallTime = 0.68f;
             break;
@@ -9996,7 +10019,7 @@ void Zombie::DrawShadow(Graphics* g)
             aShadowOffsetX += 19.0f;
         }
     }
-    else if (mZombieType == ZombieType::ZOMBIE_YETI)
+    else if (mZombieType == ZombieType::ZOMBIE_YETI || mZombieType == ZombieType::ZOMBIE_ICE_YETI)
     {
         aShadowOffsetY += 20.0f;
         if (IsWalkingBackwards())

@@ -194,7 +194,7 @@ public:
     /*inline*/ void                 SetRow(int theRow);
     float                           GetPosYBasedOnRow(int theRow);
     void                            ApplyChill(bool theIsIceTrap);
-    void                            ApplyInfinityChill(int theChillTime);
+    void                            ApplyMarigoldChill(int theChillTime);
     void                            UpdateZombieBungee();
     void                            BungeeLanding();
     bool                            EffectedByDamage(unsigned int theDamageRangeFlags);

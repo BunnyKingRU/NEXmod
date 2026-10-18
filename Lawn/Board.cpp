@@ -946,6 +946,8 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_ICE:
 	case GameMode::GAMEMODE_CHALLENGE_SHOVEL:
 	case GameMode::GAMEMODE_CHALLENGE_SQUIRREL:
+	case GameMode::GAMEMODE_CHALLENGE_ICE_LEVEL:
+	//case GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS:
 		mBackground = BackgroundType::BACKGROUND_1_DAY;
 		break;
 
@@ -1002,6 +1004,7 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_AIR_RAID:
 	case GameMode::GAMEMODE_CHALLENGE_STORMY_NIGHT:
 	case GameMode::GAMEMODE_CHALLENGE_TEST_FOG:
+	case GameMode::GAMEMODE_CHALLENGE_ALL_WAVES:
 		mBackground = BackgroundType::BACKGROUND_4_FOG;
 		break;
 
@@ -1132,6 +1135,13 @@ void Board::PickBackground()
 		else if (mApp->IsWhackAZombieLevel())
 		{
 			mChallenge->WhackAZombiePlaceGraves(9);
+		}
+		else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ALL_WAVES) {
+			AddGraveStones(4, 1, aLevelRNG);
+			AddGraveStones(5, 2, aLevelRNG);
+			AddGraveStones(6, 2, aLevelRNG);
+			AddGraveStones(7, 3, aLevelRNG);
+			AddGraveStones(8, 3, aLevelRNG);
 		}
 		else if (mBackground == BackgroundType::BACKGROUND_2_NIGHT)
 		{
@@ -2801,6 +2811,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 	}
 
 	// 墓碑吞噬者只能种植在墓碑上
+	bool aHasCrater = GetCraterAt(theGridX, theGridY);
 	bool aHasGrave = GetGraveStoneAt(theGridX, theGridY);
 	if (theSeedType == SeedType::SEED_GRAVEBUSTER)
 	{
@@ -2809,7 +2820,15 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 			return PlantingReason::PLANTING_NOT_HERE;
 		}
 
-		return aHasGrave ? PlantingReason::PLANTING_OK : PlantingReason::PLANTING_ONLY_ON_GRAVES;
+		if (aHasGrave) {
+			return PlantingReason::PLANTING_OK;
+		}
+		else if (aHasCrater) {
+			return PlantingReason::PLANTING_OK;
+		}
+		else {
+			return PlantingReason::PLANTING_ONLY_ON_GRAVES;
+		}
 	}
 	if (theSeedType == SeedType::SEED_INSTANT_COFFEE)
 	{
@@ -4985,8 +5004,11 @@ void Board::SpawnZombiesFromGraves()
 {
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
 		return;
-
-	if (StageHasRoof())
+	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ALL_WAVES) {
+		SpawnZombiesFromSky();
+		SpawnZombiesFromPool();
+	}
+	else if (StageHasRoof())
 	{
 		SpawnZombiesFromSky();
 	}
@@ -5087,8 +5109,21 @@ void Board::SpawnZombieWave()
 			}
 		}
 	}
-
-	if (mCurrentWave == mNumWaves - 1 && !mApp->IsContinuousChallenge())
+	if (mApp->mGameMode == GAMEMODE_CHALLENGE_ALL_WAVES) {
+		if (mCurrentWave == 9) {
+			mRiseFromGraveCounter = 210;
+		}
+		else if (mCurrentWave == 19) {
+			mRiseFromGraveCounter = 210;
+		}
+		else if (mCurrentWave == 29) {
+			mRiseFromGraveCounter = 210;
+		}
+		else if (mCurrentWave == 39) {
+			mRiseFromGraveCounter = 210;
+		}
+	}
+	else if (mCurrentWave == mNumWaves - 1 && !mApp->IsContinuousChallenge())
 	{
 		mRiseFromGraveCounter = 210;
 	}
@@ -5131,6 +5166,19 @@ void Board::UpdateGameObjects()
 	while (IterateLawnMowers(aLawnMower))
 	{
 		aLawnMower->Update();
+	}
+
+	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_POOL) {
+		mApp->mEasyPlantingCheat = true;
+	}
+	else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_FOG) {
+		mApp->mEasyPlantingCheat = true;
+	}
+	else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_TEST_ROOF) {
+		mApp->mEasyPlantingCheat = true;
+	}
+	else {
+		mApp->mEasyPlantingCheat = false;
 	}
 
 	mCursorPreview->Update();
@@ -5361,7 +5409,7 @@ void Board::UpdateSunSpawning()
 
 	mNumSunsFallen++;
 	mSunCountDown = min(SUN_COUNTDOWN_MAX, SUN_COUNTDOWN + mNumSunsFallen * 10) + Rand(SUN_COUNTDOWN_RANGE);
-	CoinType aSunType = mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SUNNY_DAY ? CoinType::COIN_LARGESUN : CoinType::COIN_SUN;
+	CoinType aSunType = mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ICE_LEVEL ? CoinType::COIN_SMALLSUN : CoinType::COIN_SUN;
 	AddCoin(RandRangeInt(100, 649), 60, aSunType, CoinMotion::COIN_MOTION_FROM_SKY);
 }
 
@@ -5414,6 +5462,9 @@ void Board::UpdateZombieSpawning()
 	if (mRiseFromGraveCounter > 0)
 	{
 		mRiseFromGraveCounter--;
+		if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ALL_WAVES && mRiseFromGraveCounter == 0) {
+			SpawnZombiesFromGraves();
+		}
 		if (mRiseFromGraveCounter == 0)
 		{
 			SpawnZombiesFromGraves();
@@ -8484,6 +8535,11 @@ void Board::KeyChar(SexyChar theChar)
 		AddZombie(ZombieType::ZOMBIE_LADDER, Zombie::ZOMBIE_WAVE_DEBUG);
 		return;
 	}
+	if (theChar == _S('Y'))
+	{
+		AddZombie(ZombieType::ZOMBIE_ICE_YETI, Zombie::ZOMBIE_WAVE_DEBUG);
+		return;
+	}
 	if (theChar == _S('y'))
 	{
 		AddZombie(ZombieType::ZOMBIE_YETI, Zombie::ZOMBIE_WAVE_DEBUG);
@@ -8905,7 +8961,7 @@ bool Board::StageHasGraveStones()
 		mApp->IsScaryPotterLevel())
 		return false;
 
-	return mBackground == BackgroundType::BACKGROUND_2_NIGHT;
+	return mBackground == BackgroundType::BACKGROUND_2_NIGHT || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ALL_WAVES;
 }
 
 //0x41C0B0

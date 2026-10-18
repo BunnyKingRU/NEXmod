@@ -2527,7 +2527,7 @@ void Challenge::InitZombieWavesSurvival()
 		if (mBoard->GetSurvivalFlagsCompleted() < 10 && aRandZombie == ZOMBIE_REDEYE_GARGANTUAR)								continue;
 		if (mApp->IsSurvivalNormal(mApp->mGameMode) && aRandZombie > ZOMBIE_SNORKEL)								continue;
 		if (mBoard->IsZombieTypeSpawnedOnly(aRandZombie) || Zombie::IsZombotany(aRandZombie) ||
-			aRandZombie == ZOMBIE_DUCKY_TUBE || aRandZombie == ZOMBIE_YETI)											continue;
+			aRandZombie == ZOMBIE_DUCKY_TUBE || aRandZombie == ZOMBIE_YETI || aRandZombie == ZOMBIE_ICE_YETI)											continue;
 
 		mBoard->mZombieAllowed[aRandZombie] = true;
 		aCapacity--;
@@ -2651,6 +2651,15 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_BALLOON] = true;
 		aList[ZOMBIE_DIGGER] = true;
 		aList[ZOMBIE_DANCER] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_ALL_WAVES)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_ICE_LEVEL)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_ICE_YETI] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_POGO_PARTY)
 	{
