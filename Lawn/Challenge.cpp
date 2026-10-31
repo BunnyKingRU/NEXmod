@@ -2644,22 +2644,193 @@ void Challenge::InitZombieWaves()
 		//aList[ZOMBIE_GARGANTUAR] = true;
 		//aList[ZOMBIE_IMP] = true;
 	}
-	else if (aGameMode == GAMEMODE_CHALLENGE_NIGHT_ROOF)
-	{
-		aList[ZOMBIE_NORMAL] = true;
-		aList[ZOMBIE_GARGANTUAR] = true;
-		aList[ZOMBIE_BALLOON] = true;
-		aList[ZOMBIE_DIGGER] = true;
-		aList[ZOMBIE_DANCER] = true;
-	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_ALL_WAVES)
 	{
 		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_DOOR] = true;
+		aList[ZOMBIE_SNORKEL] = true;
+		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		aList[ZOMBIE_BUNGEE] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_NIGHT_ROOF)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_POLEVAULTER] = true;
+		aList[ZOMBIE_BUNGEE] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_ICE_LEVEL)
 	{
 		aList[ZOMBIE_NORMAL] = true;
 		aList[ZOMBIE_ICE_YETI] = true;
+		aList[ZOMBIE_NEWSPAPER] = true;
+		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		aList[ZOMBIE_POGO] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_UNSODDED_PLUS)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_DOOR] = true;
+		aList[ZOMBIE_DIGGER] = true;
+		aList[ZOMBIE_CATAPULT] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_ZOMBOTANY_PLUS)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_DOOR] = true;
+		aList[ZOMBIE_DANCER] = true;
+		aList[ZOMBIE_ZAMBONI] = true;
+		aList[ZOMBIE_LADDER] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_GIGA_LEVEL)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_FOOTBALL] = true;
+		aList[ZOMBIE_GIGA_FOOTBALL] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+		aList[ZOMBIE_REDEYE_GARGANTUAR] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_EVERYONE_ZOMBIE)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_POLEVAULTER] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_NEWSPAPER] = true;
+		aList[ZOMBIE_DOOR] = true;
+		aList[ZOMBIE_FOOTBALL] = true;
+		aList[ZOMBIE_DANCER] = true;
+		aList[ZOMBIE_SNORKEL] = true;
+		aList[ZOMBIE_ZAMBONI] = true;
+		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_DIGGER] = true;
+		aList[ZOMBIE_POGO] = true;
+		aList[ZOMBIE_BUNGEE] = true;
+		aList[ZOMBIE_LADDER] = true;
+		aList[ZOMBIE_CATAPULT] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_NIGHT_ROOF_2)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_DANCER] = true;
+		aList[ZOMBIE_DIGGER] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_ONLY_SEA)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_DUCKY_TUBE] = true;
+		aList[ZOMBIE_SNORKEL] = true;
+		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_NO_DEFENCE)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_FOOTBALL] = true;
+		aList[ZOMBIE_DANCER] = true;
+		aList[ZOMBIE_ZAMBONI] = true;
+		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_BUNGEE] = true;
+		aList[ZOMBIE_CATAPULT] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_GRAVE_DANGER_PLUS)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_NEWSPAPER] = true;
+		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_POGO] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_NO_SUNFLOWERS)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_DANCER] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_POGO] = true;
+		aList[ZOMBIE_BUNGEE] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_FOG_ROOF)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_CATAPULT] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+		}
+	else if (aGameMode == GAMEMODE_CHALLENGE_ZEN_GARDEN_LEVEL)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_GIGA_FOOTBALL] = true;
+		aList[ZOMBIE_REDEYE_GARGANTUAR] = true;
+		aList[ZOMBIE_YETI] = true;
+		aList[ZOMBIE_DUCKY_TUBE] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_1_9_UPGRADED)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_POLEVAULTER] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_2_9_UPGRADED)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_NEWSPAPER] = true;
+		aList[ZOMBIE_DOOR] = true;
+		aList[ZOMBIE_FOOTBALL] = true;
+		aList[ZOMBIE_DANCER] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_3_9_UPGRADED)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_SNORKEL] = true;
+		aList[ZOMBIE_ZAMBONI] = true;
+		aList[ZOMBIE_DOLPHIN_RIDER] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_4_9_UPGRADED)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_DIGGER] = true;
+		aList[ZOMBIE_POGO] = true;
+	}
+	else if (aGameMode == GAMEMODE_CHALLENGE_5_9_UPGRADED)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_PAIL] = true;
+		aList[ZOMBIE_BUNGEE] = true;
+		aList[ZOMBIE_LADDER] = true;
+		aList[ZOMBIE_CATAPULT] = true;
+		aList[ZOMBIE_REDEYE_GARGANTUAR] = true;
 	}
 	else if (aGameMode == GAMEMODE_CHALLENGE_POGO_PARTY)
 	{

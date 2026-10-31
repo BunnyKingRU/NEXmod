@@ -30,10 +30,26 @@ ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES] = {
 	{ GameMode::GAMEMODE_SURVIVAL_ENDLESS_STAGE_3,             12,  ChallengePage::CHALLENGE_PAGE_SURVIVAL,    2,  2,  _S("[SURVIVAL_POOL_ENDLESS]") },
 	{ GameMode::GAMEMODE_SURVIVAL_ENDLESS_STAGE_4,             13,  ChallengePage::CHALLENGE_PAGE_SURVIVAL,    2,  3,  _S("[SURVIVAL_FOG_ENDLESS]") },
 	{ GameMode::GAMEMODE_SURVIVAL_ENDLESS_STAGE_5,             14,  ChallengePage::CHALLENGE_PAGE_SURVIVAL,    2,  4,  _S("[SURVIVAL_ROOF_ENDLESS]") },
-	{ GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS,                 19,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  0,  _S("[FINAL_BOSS]") },
+	{ GameMode::GAMEMODE_CHALLENGE_ALL_WAVES,                  15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  0,  _S("All Waves") },
 	{ GameMode::GAMEMODE_CHALLENGE_NIGHT_ROOF,                 1,   ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  1,  _S("Night Roof") },
-	{ GameMode::GAMEMODE_CHALLENGE_ALL_WAVES,                  15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  2,  _S("All Waves") },
-	{ GameMode::GAMEMODE_CHALLENGE_ICE_LEVEL,                  15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  3,  _S("Ice Level") },
+	{ GameMode::GAMEMODE_CHALLENGE_ICE_LEVEL,                  15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  2,  _S("Ice Level") },
+	{ GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  3,  _S("Unsodded Plus") },
+	{ GameMode::GAMEMODE_CHALLENGE_ZOMBOTANY_PLUS,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   0,  4,  _S("Zombotany Plus") },
+	{ GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS,                 19,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   1,  0,  _S("[FINAL_BOSS]") },
+	{ GameMode::GAMEMODE_CHALLENGE_GIGA_LEVEL,				   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   1,  1,  _S("Gige Level") },
+	{ GameMode::GAMEMODE_CHALLENGE_EVERYONE_ZOMBIE,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   1,  2,  _S("Everyone Zombie") },
+	{ GameMode::GAMEMODE_CHALLENGE_NIGHT_ROOF_2,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   1,  3,  _S("Night Roof 2") },
+	{ GameMode::GAMEMODE_CHALLENGE_ONLY_SEA,				   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   1,  4,  _S("Only Sea") },
+	{ GameMode::GAMEMODE_CHALLENGE_NO_DEFENCE,				   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   2,  0,  _S("No Defence") },
+	{ GameMode::GAMEMODE_CHALLENGE_GRAVE_DANGER_PLUS,		   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   2,  1,  _S("Grave Danger Plus") },
+	{ GameMode::GAMEMODE_CHALLENGE_NO_SUNFLOWERS,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   2,  2,  _S("NO Sunflowers") },
+	{ GameMode::GAMEMODE_CHALLENGE_FOG_ROOF,				   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   2,  3,  _S("Fog Roof") },
+	{ GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN_LEVEL,		   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   2,  4,  _S("Zen Garden") },
+	{ GameMode::GAMEMODE_CHALLENGE_1_9_UPGRADED,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   3,  0,  _S("1-9 Upgraded")},
+	{ GameMode::GAMEMODE_CHALLENGE_2_9_UPGRADED,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   3,  1,  _S("2-9 Upgraded") },
+	{ GameMode::GAMEMODE_CHALLENGE_3_9_UPGRADED,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   3,  2,  _S("3-9 Upgraded") },
+	{ GameMode::GAMEMODE_CHALLENGE_4_9_UPGRADED,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   3,  3,  _S("4-9 Upgraded") },
+	{ GameMode::GAMEMODE_CHALLENGE_5_9_UPGRADED,			   15,  ChallengePage::CHALLENGE_PAGE_CHALLENGE,   3,  4,  _S("5-9 Upgraded") },
 	{ GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN,                 7,   ChallengePage::CHALLENGE_PAGE_LIMBO,       2,  3,  _S("[ZEN_GARDEN]") },
 	{ GameMode::GAMEMODE_TREE_OF_WISDOM,                       10,  ChallengePage::CHALLENGE_PAGE_LIMBO,       2,  4,  _S("Tree Of Wisdom") },
 	{ GameMode::GAMEMODE_SCARY_POTTER_1,                       10,  ChallengePage::CHALLENGE_PAGE_PUZZLE,      0,  0,  _S("[SCARY_POTTER_1]") },
@@ -249,15 +265,17 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 		return aDef.mChallengeMode == GAMEMODE_CHALLENGE_FINAL_BOSS ? 1 : 0;
 	}
 	
+	//-------------------------------------------------------------------------------
+
 	if (mApp->IsTrialStageLocked())
 	{
 		if (mPageIndex == CHALLENGE_PAGE_PUZZLE && aDef.mChallengeMode >= GAMEMODE_SCARY_POTTER_4)
 		{
 			return aDef.mChallengeMode == GAMEMODE_SCARY_POTTER_4 ? 1 : 2;
 		}
-		else if (mPageIndex == CHALLENGE_PAGE_CHALLENGE && aDef.mChallengeMode >= GAMEMODE_CHALLENGE_RAINING_SEEDS)
+		else if (mPageIndex == CHALLENGE_PAGE_CHALLENGE && aDef.mChallengeMode >= GAMEMODE_CHALLENGE_UNSODDED_PLUS)
 		{
-			return aDef.mChallengeMode == GAMEMODE_CHALLENGE_RAINING_SEEDS ? 1 : 2;
+			return aDef.mChallengeMode == GAMEMODE_CHALLENGE_UNSODDED_PLUS ? 1 : 2;
 		}
 		else if (mPageIndex == CHALLENGE_PAGE_SURVIVAL && aDef.mChallengeMode >= GAMEMODE_SURVIVAL_NORMAL_STAGE_4)
 		{

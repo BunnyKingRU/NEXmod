@@ -17,6 +17,8 @@ bool Sexy::ExtractResourcesByName(ResourceManager *theManager, const char *theNa
 	if (strcmp(theName,"DelayLoad_Background4")==0) return ExtractDelayLoad_Background4Resources(theManager);
 	if (strcmp(theName,"DelayLoad_Background5")==0) return ExtractDelayLoad_Background5Resources(theManager);
 	if (strcmp(theName,"DelayLoad_Background6")==0) return ExtractDelayLoad_Background6Resources(theManager);
+	if (strcmp(theName,"DelayLoad_Background7")==0) return ExtractDelayLoad_Background7Resources(theManager);
+	if (strcmp(theName,"DelayLoad_Background8")==0) return ExtractDelayLoad_Background8Resources(theManager);
 	if (strcmp(theName,"DelayLoad_BackgroundUnsodded")==0) return ExtractDelayLoad_BackgroundUnsoddedResources(theManager);
 	if (strcmp(theName,"DelayLoad_ChallengeScreen")==0) return ExtractDelayLoad_ChallengeScreenResources(theManager);
 	if (strcmp(theName,"DelayLoad_Credits")==0) return ExtractDelayLoad_CreditsResources(theManager);
@@ -260,6 +262,52 @@ bool Sexy::ExtractDelayLoad_Background6Resources(ResourceManager *theManager)
 	{
 		IMAGE_BACKGROUND6BOSS = aMgr.GetImageThrow("IMAGE_BACKGROUND6BOSS");
 		IMAGE_BACKGROUND6_GAMEOVER_MASK = aMgr.GetImageThrow("IMAGE_BACKGROUND6_GAMEOVER_MASK");
+	}
+	catch(ResourceManagerException&)
+	{
+		return false;
+	}
+	return true;
+}
+
+// DelayLoad_Background7 Resources
+Image* Sexy::IMAGE_BACKGROUND7ICE;
+Image* Sexy::IMAGE_BACKGROUND7_GAMEOVER_INTERIOR_OVERLAY;
+Image* Sexy::IMAGE_BACKGROUND7_GAMEOVER_MASK;
+
+bool Sexy::ExtractDelayLoad_Background7Resources(ResourceManager *theManager)
+{
+	gNeedRecalcVariableToIdMap = true;
+
+	ResourceManager &aMgr = *theManager;
+	try
+	{
+		IMAGE_BACKGROUND7ICE = aMgr.GetImageThrow("IMAGE_BACKGROUND7ICE");
+		IMAGE_BACKGROUND7_GAMEOVER_INTERIOR_OVERLAY = aMgr.GetImageThrow("IMAGE_BACKGROUND7_GAMEOVER_INTERIOR_OVERLAY");
+		IMAGE_BACKGROUND7_GAMEOVER_MASK = aMgr.GetImageThrow("IMAGE_BACKGROUND7_GAMEOVER_MASK");
+	}
+	catch(ResourceManagerException&)
+	{
+		return false;
+	}
+	return true;
+}
+
+// DelayLoad_Background8 Resources
+Image* Sexy::IMAGE_BACKGROUND8SEA;
+Image* Sexy::IMAGE_BACKGROUND8_GAMEOVER_INTERIOR_OVERLAY;
+Image* Sexy::IMAGE_BACKGROUND8_GAMEOVER_MASK;
+
+bool Sexy::ExtractDelayLoad_Background8Resources(ResourceManager *theManager)
+{
+	gNeedRecalcVariableToIdMap = true;
+
+	ResourceManager &aMgr = *theManager;
+	try
+	{
+		IMAGE_BACKGROUND8SEA = aMgr.GetImageThrow("IMAGE_BACKGROUND8SEA");
+		IMAGE_BACKGROUND8_GAMEOVER_INTERIOR_OVERLAY = aMgr.GetImageThrow("IMAGE_BACKGROUND8_GAMEOVER_INTERIOR_OVERLAY");
+		IMAGE_BACKGROUND8_GAMEOVER_MASK = aMgr.GetImageThrow("IMAGE_BACKGROUND8_GAMEOVER_MASK");
 	}
 	catch(ResourceManagerException&)
 	{
@@ -2376,6 +2424,12 @@ static void* gResources[] =
 	&IMAGE_BACKGROUND5_GAMEOVER_MASK,
 	&IMAGE_BACKGROUND6BOSS,
 	&IMAGE_BACKGROUND6_GAMEOVER_MASK,
+	&IMAGE_BACKGROUND7ICE,
+	&IMAGE_BACKGROUND7_GAMEOVER_INTERIOR_OVERLAY,
+	&IMAGE_BACKGROUND7_GAMEOVER_MASK,
+	&IMAGE_BACKGROUND8SEA,
+	&IMAGE_BACKGROUND8_GAMEOVER_INTERIOR_OVERLAY,
+	&IMAGE_BACKGROUND8_GAMEOVER_MASK,
 	&IMAGE_BACKGROUND_MUSHROOMGARDEN,
 	&IMAGE_BACKGROUND_GREENHOUSE,
 	&IMAGE_BACKGROUND_GREENHOUSE_OVERLAY,
@@ -3091,6 +3145,12 @@ const char* Sexy::GetStringIdById(int theId)
 		case IMAGE_BACKGROUND5_GAMEOVER_MASK_ID: return "IMAGE_BACKGROUND5_GAMEOVER_MASK";
 		case IMAGE_BACKGROUND6BOSS_ID: return "IMAGE_BACKGROUND6BOSS";
 		case IMAGE_BACKGROUND6_GAMEOVER_MASK_ID: return "IMAGE_BACKGROUND6_GAMEOVER_MASK";
+		case IMAGE_BACKGROUND7ICE_ID: return "IMAGE_BACKGROUND7ICE";
+		case IMAGE_BACKGROUND7_GAMEOVER_INTERIOR_OVERLAY_ID: return "IMAGE_BACKGROUND7_GAMEOVER_INTERIOR_OVERLAY";
+		case IMAGE_BACKGROUND7_GAMEOVER_MASK_ID: return "IMAGE_BACKGROUND7_GAMEOVER_MASK";
+		case IMAGE_BACKGROUND8SEA_ID: return "IMAGE_BACKGROUND8SEA";
+		case IMAGE_BACKGROUND8_GAMEOVER_INTERIOR_OVERLAY_ID: return "IMAGE_BACKGROUND8_GAMEOVER_INTERIOR_OVERLAY";
+		case IMAGE_BACKGROUND8_GAMEOVER_MASK_ID: return "IMAGE_BACKGROUND8_GAMEOVER_MASK";
 		case IMAGE_BACKGROUND_MUSHROOMGARDEN_ID: return "IMAGE_BACKGROUND_MUSHROOMGARDEN";
 		case IMAGE_BACKGROUND_GREENHOUSE_ID: return "IMAGE_BACKGROUND_GREENHOUSE";
 		case IMAGE_BACKGROUND_GREENHOUSE_OVERLAY_ID: return "IMAGE_BACKGROUND_GREENHOUSE_OVERLAY";

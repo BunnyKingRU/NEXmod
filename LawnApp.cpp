@@ -127,7 +127,7 @@ LawnApp::LawnApp()
 	mLastLevelStats = new LevelStats();
 	mFirstTimeGameSelector = true;
 	mGameMode = GameMode::GAMEMODE_ADVENTURE;
-	mEasyPlantingCheat = false;
+	mEasyPlantingCheat = true;
 
 
 

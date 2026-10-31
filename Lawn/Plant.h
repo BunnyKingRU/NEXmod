@@ -201,6 +201,7 @@ public:
     bool                    mIsOnBoard;                     //+0x144
     bool                    mHighlighted;                   //+0x145
     bool                    mGBEatGraveStone;
+    bool                    mIsDefsPlant;
 
 public:
     Plant();
@@ -309,6 +310,7 @@ public:
     void                    UpdatePlantern();
     void                    MagnetAll();
     void                    TallNutTakeDamage();
+    void                    DefsPlantTakeDamage();
 };
 
 float                       PlantDrawHeightOffset(Board* theBoard, Plant* thePlant, SeedType theSeedType, int theCol, int theRow);

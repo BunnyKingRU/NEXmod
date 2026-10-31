@@ -137,6 +137,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     mSubclass = aPlantDef.mSubClass;
     mRenderOrder = CalcRenderOrder();
     mGBEatGraveStone = true;
+    mIsDefsPlant = false;
 
     Reanimation* aBodyReanim = nullptr;
     if (aPlantDef.mReanimationType != ReanimationType::REANIM_NONE)
@@ -255,11 +256,13 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     case SeedType::SEED_WALLNUT:
         mPlantHealth = 4000;
         mBlinkCountdown = 1000 + Sexy::Rand(1000);
+        mIsDefsPlant = true;
         break;
     case SeedType::SEED_EXPLODE_O_NUT:
         mPlantHealth = 4000;
         mBlinkCountdown = 1000 + Sexy::Rand(1000);
         aBodyReanim->mColorOverride = Color(255, 64, 64);
+        mIsDefsPlant = true;
         break;
     case SeedType::SEED_GIANT_WALLNUT:
         mPlantHealth = 4000;
@@ -269,6 +272,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         mPlantHealth = 8100;
         mHeight = 80;
         mBlinkCountdown = 1000 + Sexy::Rand(1000);
+        mIsDefsPlant = true;
         break;
     case SeedType::SEED_GARLIC:
         TOD_ASSERT(aBodyReanim);
@@ -368,6 +372,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     {
         mPlantHealth = 4000;
         mWidth = 120;
+        mIsDefsPlant = true;
 
         TOD_ASSERT(aBodyReanim);
         aBodyReanim->AssignRenderGroupToTrack("Pumpkin_back", 1);
@@ -642,11 +647,28 @@ void Plant::TallNutTakeDamage()
 {
     Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
 
-    mPlantHealth -= 900;
+    mPlantHealth -= 1600;
     if (mPlantHealth <= 0)
     {
         mApp->PlayFoley(FoleyType::FOLEY_SQUISH);
         Die();
+    }
+}
+
+void Plant::DefsPlantTakeDamage()
+{
+    Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+
+    mPlantHealth -= 2000;
+    if (mPlantHealth <= 0)
+    {
+        if (mSeedType == SeedType::SEED_EXPLODE_O_NUT) {
+            ExplodeONutExplode();
+        }
+        else {
+            mApp->PlayFoley(FoleyType::FOLEY_SQUISH);
+            Die();
+        }
     }
 }
 
@@ -3043,17 +3065,16 @@ void Plant::Update()
             Die();
 
 
-        if (mSeedType == SEED_TALLNUT) 
+        if (mSeedType != SEED_EXPLODE_O_NUT && mIsDefsPlant)
         {
             Zombie* aZombie = nullptr;
 
-            while (mBoard->IterateZombies(aZombie)) 
+            while (mBoard->IterateZombies(aZombie))
             {
                 if (aZombie->mZombieType == ZombieType::ZOMBIE_ZAMBONI || aZombie->mZombieType == ZombieType::ZOMBIE_CATAPULT)
                 {
                     if (mX == aZombie->mPosX && mY == aZombie->mPosY) {
                         aZombie->mPosX -= 100;
-                        TallNutTakeDamage();
                     }
                 }
             }
@@ -4693,6 +4714,7 @@ void Plant::ExplodeONutExplode() {
     mBoard->KillAllZombiesInRadius(mRow, aPosX, aPosY, 90, 1, true, aDamageRangeFlags);
     mApp->AddTodParticle(aPosX, aPosY, (int)RenderLayer::RENDER_LAYER_TOP, ParticleEffect::PARTICLE_POWIE);
     mBoard->ShakeBoard(3, -4);
+    Die();
 
 }
 

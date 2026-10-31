@@ -2250,12 +2250,23 @@ void Zombie::UpdateZombieGargantuar()
                         SquishAllInSquare(aPlant->mPlantCol, aPlant->mRow, ZombieAttackType::ATTACKTYPE_CHEW);
                     }
                 }
-                else if (aPlant->mSeedType == SeedType::SEED_TALLNUT)
+                else if (aPlant->mIsDefsPlant) 
                 {
-                    aPlant->TallNutTakeDamage();
-                    if (aPlant->mPlantHealth <= 0)
+                    if (aPlant->mSeedType == SeedType::SEED_TALLNUT)
                     {
-                        SquishAllInSquare(aPlant->mPlantCol, aPlant->mRow, ZombieAttackType::ATTACKTYPE_CHEW);
+                        aPlant->TallNutTakeDamage();
+                        if (aPlant->mPlantHealth <= 0)
+                        {
+                            SquishAllInSquare(aPlant->mPlantCol, aPlant->mRow, ZombieAttackType::ATTACKTYPE_CHEW);
+                        }
+                    }
+                    else if (aPlant->mSeedType != SeedType::SEED_TALLNUT) 
+                    {
+                        aPlant->DefsPlantTakeDamage();
+                        if (aPlant->mPlantHealth <= 0)
+                        {
+                            SquishAllInSquare(aPlant->mPlantCol, aPlant->mRow, ZombieAttackType::ATTACKTYPE_CHEW);
+                        }
                     }
                 }
                 else
@@ -2534,8 +2545,18 @@ void Zombie::UpdateZombieJalapenoHead()
                 //Rect aPlantRect = aPlant->GetPlantRect();
                 if (aPlant->mRow == mRow && !aPlant->NotOnGround())
                 {
-                    mBoard->mPlantsEaten++;
-                    aPlant->Die();
+                    if (aPlant->mIsDefsPlant) {
+                        if (aPlant->mSeedType == SeedType::SEED_TALLNUT) {
+                            aPlant->TallNutTakeDamage();
+                        }
+                        else {
+                            aPlant->DefsPlantTakeDamage();
+                        }
+                    }
+                    else {
+                        mBoard->mPlantsEaten++;
+                        aPlant->Die();
+                    }
                 }
             }
         }
@@ -4568,6 +4589,16 @@ void Zombie::Update()
                             mBoard->AddACrater(aPlant->mPlantCol, aPlant->mRow)->mGridItemCounter = 18000;
                         }
                     }
+                    else if (aPlant->mIsDefsPlant && aPlant->mSeedType != SeedType::SEED_TALLNUT)
+                    {
+                        TakeDamage(0, 32U);
+                        aPlant->DefsPlantTakeDamage();
+                        if (aPlant->mPlantHealth <= 0)
+                        {
+                            SquishAllInSquare(aPlant->mPlantCol, aPlant->mRow, ZombieAttackType::ATTACKTYPE_CHEW);
+                            mBoard->AddACrater(aPlant->mPlantCol, aPlant->mRow)->mGridItemCounter = 18000;
+                        }
+                    }
                     else
                     {
                         SquishAllInSquare(aPlant->mPlantCol, aPlant->mRow, ZombieAttackType::ATTACKTYPE_CHEW);
@@ -4798,7 +4829,8 @@ void Zombie::CheckForBoardEdge()
         }
         else
         {
-            mBoard->ZombiesWon(this);
+            DieNoLoot();
+            //mBoard->ZombiesWon(this);
         }
     }
     if (mX <= aEdgeX + 70 && !mHasHead)
@@ -6749,8 +6781,15 @@ void Zombie::SquishAllInSquare(int theX, int theY, ZombieAttackType theAttackTyp
             {
                 continue;
             }
-
-            if (aPlant->mSeedType != SeedType::SEED_SPIKEROCK)
+            if (aPlant->mIsDefsPlant) {
+                if (aPlant->mSeedType == SeedType::SEED_TALLNUT) {
+                    aPlant->TallNutTakeDamage();
+                }
+                else {
+                    aPlant->DefsPlantTakeDamage();
+                }
+            }
+            else if (aPlant->mSeedType != SeedType::SEED_SPIKEROCK)
             {
                 mBoard->mPlantsEaten++;
                 aPlant->Squish();
@@ -6871,6 +6910,17 @@ void Zombie::CheckSquish(ZombieAttackType theAttackType)
             {
                 mPosX += 100;
                 aPlant->TallNutTakeDamage();
+            }
+            else if (GetRectOverlap(aAttackRect, aPlantRect) >= 20 && CanTargetPlant(aPlant, theAttackType) && aPlant->mSeedType != SeedType::SEED_TALLNUT && aPlant->mIsDefsPlant && aPlant->mSeedType != SeedType::SEED_EXPLODE_O_NUT)
+            {
+                mPosX += 100;
+                aPlant->DefsPlantTakeDamage();
+            }
+            else if (GetRectOverlap(aAttackRect, aPlantRect) >= 20 && CanTargetPlant(aPlant, theAttackType) && aPlant->mSeedType == SeedType::SEED_EXPLODE_O_NUT && (mZombieType == ZombieType::ZOMBIE_CATAPULT || mZombieType == ZombieType::ZOMBIE_ZAMBONI))
+            {
+                mPosX += 100;
+                aPlant->ExplodeONutExplode();
+                aPlant->Die();
             }
             else if (GetRectOverlap(aAttackRect, aPlantRect) >= 20 && CanTargetPlant(aPlant, theAttackType) && !aPlant->IsSpiky())
             {
@@ -7413,7 +7463,17 @@ void Zombie::EatPlant(Plant* thePlant)
     }
 
     if (mZombieType == ZombieType::ZOMBIE_FOOTBALL) {
-        thePlant->mPlantHealth -= DAMAGE_PER_EAT_ZOMBIE_FOOTBALL;
+        if (thePlant->mIsDefsPlant) {
+            if (thePlant->mSeedType == SeedType::SEED_TALLNUT) {
+                thePlant->mPlantHealth -= 1500;
+            }
+            else {
+                thePlant->mPlantHealth -= 1000;
+            }
+        }
+        else {
+            thePlant->mPlantHealth -= DAMAGE_PER_EAT_ZOMBIE_FOOTBALL;
+        }
     }
     else if (mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX || mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER) {
         thePlant->mPlantHealth -= DAMAGE_PER_EAT_ZOMBIE_JACK_IN_THE_BOX;
@@ -9890,10 +9950,12 @@ bool Zombie::SetupDrawZombieWon(Graphics* g)
     {
     case BackgroundType::BACKGROUND_1_DAY:
     case BackgroundType::BACKGROUND_2_NIGHT:
+    case BackgroundType::BACKGROUND_7_ICE:
         g->ClipRect(-123 - mX, -mY, BOARD_WIDTH, BOARD_HEIGHT);
         break;
     case BackgroundType::BACKGROUND_3_POOL:
     case BackgroundType::BACKGROUND_4_FOG:
+    case BackgroundType::BACKGROUND_8_SEA:
         g->ClipRect(-172 - mX, -mY, BOARD_WIDTH, BOARD_HEIGHT);
         break;
     case BackgroundType::BACKGROUND_5_ROOF:
@@ -10189,7 +10251,8 @@ void Zombie::WalkIntoHouse()
     }
 
     if (mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT ||
-        mBoard->mBackground == BackgroundType::BACKGROUND_3_POOL || mBoard->mBackground == BackgroundType::BACKGROUND_4_FOG)
+        mBoard->mBackground == BackgroundType::BACKGROUND_3_POOL || mBoard->mBackground == BackgroundType::BACKGROUND_4_FOG || 
+        mBoard->mBackground == BackgroundType::BACKGROUND_7_ICE || mBoard->mBackground == BackgroundType::BACKGROUND_8_SEA)
     {
         mPosY = 290.0f;
         mRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_ZOMBIE, 2, 0);

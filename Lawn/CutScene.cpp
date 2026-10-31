@@ -886,11 +886,11 @@ void CutScene::StartLevelIntro()
 		}
 		else if (mApp->IsAdventureMode())
 		{
-			if (mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT)
+			if (mBoard->mBackground == BackgroundType::BACKGROUND_1_DAY || mBoard->mBackground == BackgroundType::BACKGROUND_2_NIGHT || mBoard->mBackground == BackgroundType::BACKGROUND_7_ICE)
 			{
 				aHouseMessage = TodStringTranslate(_S("[PLAYERS_HOUSE]"));
 			}
-			else if (mBoard->mBackground == BackgroundType::BACKGROUND_3_POOL || mBoard->mBackground == BackgroundType::BACKGROUND_4_FOG)
+			else if (mBoard->mBackground == BackgroundType::BACKGROUND_3_POOL || mBoard->mBackground == BackgroundType::BACKGROUND_4_FOG || mBoard->mBackground == BackgroundType::BACKGROUND_8_SEA)
 			{
 				aHouseMessage = TodStringTranslate(_S("[PLAYERS_BACKYARD]"));
 			}

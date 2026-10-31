@@ -384,6 +384,7 @@ void CreditScreen::PreLoadCredits()
 	TodLoadResources("DelayLoad_Background4");
 	TodLoadResources("DelayLoad_Background5");
 	TodLoadResources("DelayLoad_Background6");
+    TodLoadResources("DelayLoad_Background7");
 
     ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_CREDITS_MAIN, true);
     ReanimationPreload(ReanimationType::REANIM_CREDITS_MAIN);

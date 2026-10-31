@@ -625,7 +625,7 @@ void Board::PickZombieWaves()
 				 aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_2 || aGameMode == GameMode::GAMEMODE_CHALLENGE_POGO_PARTY)
 			mNumWaves = 30;
 		else
-			mNumWaves = 40;
+			mNumWaves = 10;
 	}
 
 	// ====================================================================================================
@@ -866,6 +866,14 @@ void Board::LoadBackgroundImages()
 		TodLoadResources("DelayLoad_Background6");
 		break;
 
+	case BackgroundType::BACKGROUND_7_ICE:
+		TodLoadResources("DelayLoad_Background7");
+		break;
+
+	case BackgroundType::BACKGROUND_8_SEA:
+		TodLoadResources("DelayLoad_Background8");
+		break;
+
 	case BackgroundType::BACKGROUND_GREENHOUSE:
 		TodLoadResources("DelayLoad_GreenHouseGarden");
 		TodLoadResources("DelayLoad_GreenHouseOverlay");
@@ -946,8 +954,10 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_ICE:
 	case GameMode::GAMEMODE_CHALLENGE_SHOVEL:
 	case GameMode::GAMEMODE_CHALLENGE_SQUIRREL:
-	case GameMode::GAMEMODE_CHALLENGE_ICE_LEVEL:
-	//case GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS:
+	case GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS:
+	case GameMode::GAMEMODE_CHALLENGE_ZOMBOTANY_PLUS:
+	case GameMode::GAMEMODE_CHALLENGE_NO_SUNFLOWERS:
+	case GameMode::GAMEMODE_CHALLENGE_1_9_UPGRADED:
 		mBackground = BackgroundType::BACKGROUND_1_DAY;
 		break;
 
@@ -979,6 +989,9 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_8:
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_9:
 	case GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_ENDLESS:
+	case GameMode::GAMEMODE_CHALLENGE_GIGA_LEVEL:
+	case GameMode::GAMEMODE_CHALLENGE_NO_DEFENCE:
+	case GameMode::GAMEMODE_CHALLENGE_2_9_UPGRADED:
 		mBackground = BackgroundType::BACKGROUND_2_NIGHT;
 		break;
 
@@ -993,6 +1006,8 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_UPSELL:
 	case GameMode::GAMEMODE_INTRO:
 	case GameMode::GAMEMODE_CHALLENGE_TEST_POOL:
+	case GameMode::GAMEMODE_CHALLENGE_EVERYONE_ZOMBIE:
+	case GameMode::GAMEMODE_CHALLENGE_3_9_UPGRADED:
 		mBackground = BackgroundType::BACKGROUND_3_POOL;
 		break;
 
@@ -1005,6 +1020,8 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_STORMY_NIGHT:
 	case GameMode::GAMEMODE_CHALLENGE_TEST_FOG:
 	case GameMode::GAMEMODE_CHALLENGE_ALL_WAVES:
+	case GameMode::GAMEMODE_CHALLENGE_GRAVE_DANGER_PLUS:
+	case GameMode::GAMEMODE_CHALLENGE_4_9_UPGRADED:
 		mBackground = BackgroundType::BACKGROUND_4_FOG;
 		break;
 
@@ -1016,12 +1033,24 @@ void Board::PickBackground()
 	case GameMode::GAMEMODE_CHALLENGE_HIGH_GRAVITY:
 	case GameMode::GAMEMODE_CHALLENGE_BUNGEE_BLITZ:
 	case GameMode::GAMEMODE_CHALLENGE_TEST_ROOF:
+	case GameMode::GAMEMODE_CHALLENGE_FOG_ROOF:
+	case GameMode::GAMEMODE_CHALLENGE_5_9_UPGRADED:
 		mBackground = BackgroundType::BACKGROUND_5_ROOF;
 		break;
 
 	case GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS:
 	case GameMode::GAMEMODE_CHALLENGE_NIGHT_ROOF:
+	case GameMode::GAMEMODE_CHALLENGE_NIGHT_ROOF_2:
 		mBackground = BackgroundType::BACKGROUND_6_BOSS;
+		break;
+
+	
+	case GameMode::GAMEMODE_CHALLENGE_ICE_LEVEL:
+		mBackground = BackgroundType::BACKGROUND_7_ICE;
+		break;
+
+	case GameMode::GAMEMODE_CHALLENGE_ONLY_SEA:
+		mBackground = BackgroundType::BACKGROUND_8_SEA;
 		break;
 
 	case GameMode::GAMEMODE_CHALLENGE_ZOMBIQUARIUM:
@@ -1029,6 +1058,7 @@ void Board::PickBackground()
 		break;
 
 	case GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN:
+	case GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN_LEVEL:
 		mBackground = BackgroundType::BACKGROUND_GREENHOUSE;
 		break;
 
@@ -1098,6 +1128,24 @@ void Board::PickBackground()
 		mPlantRow[3] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[4] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[5] = PlantRowType::PLANTROW_DIRT;
+	}
+	else if (mBackground == BackgroundType::BACKGROUND_7_ICE)
+	{
+		mPlantRow[0] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[1] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[2] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[3] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[4] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[5] = PlantRowType::PLANTROW_DIRT;
+	}
+	else if (mBackground == BackgroundType::BACKGROUND_8_SEA) 
+	{
+		mPlantRow[0] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[1] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[2] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[3] = PlantRowType::PLANTROW_NORMAL;
+		mPlantRow[4] = PlantRowType::PLANTROW_POOL;
+		mPlantRow[5] = PlantRowType::PLANTROW_POOL;
 	}
 	else
 	{
@@ -5178,7 +5226,7 @@ void Board::UpdateGameObjects()
 		mApp->mEasyPlantingCheat = true;
 	}
 	else {
-		mApp->mEasyPlantingCheat = false;
+		mApp->mEasyPlantingCheat = true;
 	}
 
 	mCursorPreview->Update();
@@ -6079,6 +6127,8 @@ void Board::DrawBackdrop(Graphics* g)
 	case BackgroundType::BACKGROUND_4_FOG:				aBgImage = Sexy::IMAGE_BACKGROUND4;						break;
 	case BackgroundType::BACKGROUND_5_ROOF:				aBgImage = Sexy::IMAGE_BACKGROUND5;						break;
 	case BackgroundType::BACKGROUND_6_BOSS:				aBgImage = Sexy::IMAGE_BACKGROUND6BOSS;					break;
+	case BackgroundType::BACKGROUND_7_ICE:				aBgImage = Sexy::IMAGE_BACKGROUND7ICE;					break;
+	case BackgroundType::BACKGROUND_8_SEA:				aBgImage = Sexy::IMAGE_BACKGROUND8SEA;					break;
 	case BackgroundType::BACKGROUND_MUSHROOM_GARDEN:	aBgImage = Sexy::IMAGE_BACKGROUND_MUSHROOMGARDEN;		break;
 	case BackgroundType::BACKGROUND_GREENHOUSE:			aBgImage = Sexy::IMAGE_BACKGROUND_GREENHOUSE;			break;
 	case BackgroundType::BACKGROUND_ZOMBIQUARIUM:		aBgImage = Sexy::IMAGE_AQUARIUM1;						break;
@@ -6846,11 +6896,13 @@ void Board::DrawHouseDoorBottom(Graphics* g)
 {
 	switch (mBackground)
 	{
-	case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY, -126, 225);		break;
-	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY, -125, 196);		break;
-	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY, -171, 241);		break;
-	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_INTERIOR_OVERLAY, -172, 246);		break;
-	default:																													break;
+	case BackgroundType::BACKGROUND_1_DAY:		g->DrawImage(Sexy::IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY,    -126, 225);		break;
+	case BackgroundType::BACKGROUND_2_NIGHT:	g->DrawImage(Sexy::IMAGE_BACKGROUND2_GAMEOVER_INTERIOR_OVERLAY,    -125, 196);		break;
+	case BackgroundType::BACKGROUND_3_POOL:		g->DrawImage(Sexy::IMAGE_BACKGROUND3_GAMEOVER_INTERIOR_OVERLAY,    -171, 241);		break;
+	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_INTERIOR_OVERLAY,    -172, 246);		break;
+	case BackgroundType::BACKGROUND_7_ICE:		g->DrawImage(Sexy::IMAGE_BACKGROUND7_GAMEOVER_INTERIOR_OVERLAY,    -126, 225);		break;
+	case BackgroundType::BACKGROUND_8_SEA:		g->DrawImage(Sexy::IMAGE_BACKGROUND8_GAMEOVER_INTERIOR_OVERLAY, -171, 241);		break;
+	default:																													    break;
 	}
 }
 
@@ -6865,6 +6917,8 @@ void Board::DrawHouseDoorTop(Graphics* g)
 	case BackgroundType::BACKGROUND_4_FOG:		g->DrawImage(Sexy::IMAGE_BACKGROUND4_GAMEOVER_MASK, -173, 133);		break;
 	case BackgroundType::BACKGROUND_5_ROOF:		g->DrawImage(Sexy::IMAGE_BACKGROUND5_GAMEOVER_MASK, -220, 81);		break;
 	case BackgroundType::BACKGROUND_6_BOSS:		g->DrawImage(Sexy::IMAGE_BACKGROUND6_GAMEOVER_MASK, -220, 81);		break;
+	case BackgroundType::BACKGROUND_7_ICE:		g->DrawImage(Sexy::IMAGE_BACKGROUND7_GAMEOVER_MASK, -130, 202);		break;
+	case BackgroundType::BACKGROUND_8_SEA:		g->DrawImage(Sexy::IMAGE_BACKGROUND8_GAMEOVER_MASK, -130, 202);		break;
 	default:																										break;
 	}
 }
@@ -8973,12 +9027,12 @@ bool Board::StageHasRoof()
 //0x41C0D0
 bool Board::StageHasPool()
 {
-	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG);
+	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG || mBackground == BackgroundType::BACKGROUND_8_SEA);
 }
 
 bool Board::StageHas6Rows()
 {
-	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG);
+	return (mBackground == BackgroundType::BACKGROUND_3_POOL || mBackground == BackgroundType::BACKGROUND_4_FOG || mBackground == BackgroundType::BACKGROUND_8_SEA);
 }
 
 //0x41C0F0

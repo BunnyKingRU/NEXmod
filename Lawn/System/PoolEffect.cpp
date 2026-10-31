@@ -111,13 +111,20 @@ void PoolEffect::PoolEffectDraw(Sexy::Graphics* g, bool theIsNight)
 {
     if (!mApp->Is3DAccelerated())
     {
-        if (theIsNight)
+        
+
+        if (theIsNight && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_TEST_POOL)
         {
             g->DrawImage(IMAGE_POOL_NIGHT, 34, 278);
         }
-        else
+        else if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_TEST_POOL)
         {
             g->DrawImage(IMAGE_POOL, 34, 278);
+        }
+        else 
+        {
+            g->DrawImage(IMAGE_POOL, 34, 102);
+            g->DrawImage(IMAGE_POOL, 34, 426);
         }
         return;
     }
@@ -215,24 +222,132 @@ void PoolEffect::PoolEffectDraw(Sexy::Graphics* g, bool theIsNight)
         }
     }
 
-    if (theIsNight)
+    if (theIsNight && mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ONLY_SEA)
     {
         g->DrawTrianglesTex(IMAGE_POOL_BASE_NIGHT, aVertArray[0], 150);
         g->DrawTrianglesTex(IMAGE_POOL_SHADING_NIGHT, aVertArray[1], 150);
     }
-    else
+    else if (mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_ONLY_SEA)
     {
         g->DrawTrianglesTex(IMAGE_POOL_BASE, aVertArray[0], 150);
         g->DrawTrianglesTex(IMAGE_POOL_SHADING, aVertArray[1], 150);
     }
+    else {
 
-    UpdateWaterEffect(g);
-    D3DInterface* anInterface = ((DDImage*)g->mDestImage)->mDDInterface->mD3DInterface;
-    anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
-    anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
-    g->DrawTrianglesTex(mCausticImage, aVertArray[2], 150);
-    anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
-    anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+        // Смещение для первой (нижней) реки в пикселях. 
+    // Подберите значение: например, 45.0f или 85.0f, чтобы вода встала точно на вашу новую дорожку
+        float lowerPoolShiftY = 148.0f;
+
+        for (int x = 0; x < 15; x++)
+        {
+            for (int y = 0; y < 5; y++)
+            {
+                for (int aLayer = 0; aLayer < 3; aLayer++)
+                {
+                    TriVertex* pVert = &aVertArray[aLayer][x * 10 + y * 2][0];
+                    for (int aVertIndex = 0; aVertIndex < 6; aVertIndex++, pVert++)
+                    {
+                        int aIndexX = x + aIndexOffsetX[aVertIndex];
+                        int aIndexY = y + aIndexOffsetY[aVertIndex];
+
+                        if (aLayer == 2)
+                        {
+                            pVert->x = (704.0f / 15.0f) * aIndexX + 45.0f;
+
+                            // Сдвигаем физическую позицию каустики вниз
+                            pVert->y = 30.0f * aIndexY + 288.0f + lowerPoolShiftY;
+
+                            pVert->u = aOffsetArray[2][aIndexX][aIndexY][0] + aIndexX / 15.0f;
+                            pVert->v = aOffsetArray[2][aIndexX][aIndexY][1] + aIndexY / 5.0f;
+
+                            if (!g->mClipRect.Contains(pVert->x, pVert->y)) pVert->color = 0x00FFFFFFUL;
+                            else if (aIndexX == 0 || aIndexX == 15 || aIndexY == 0) pVert->color = 0x20FFFFFFUL;
+                            else if (theIsNight) pVert->color = 0x30FFFFFFUL;
+                            else pVert->color = aIndexX <= 7 ? 0xC0FFFFFFUL : 0x80FFFFFFUL;
+                        }
+                        else
+                        {
+                            pVert->color = 0xFFFFFFFFUL;
+                            pVert->x = aIndexX * aGridSquareX + 35.0f;
+
+                            // Сдвигаем физическую позицию базы бассейна вниз
+                            pVert->y = aIndexY * aGridSquareY + 279.0f + lowerPoolShiftY;
+
+                            pVert->u = aOffsetArray[aLayer][aIndexX][aIndexY][0] + aIndexX / 15.0f;
+                            pVert->v = aOffsetArray[aLayer][aIndexX][aIndexY][1] + aIndexY / 5.0f;
+
+                            if (!g->mClipRect.Contains(pVert->x, pVert->y)) pVert->color = 0x00FFFFFFUL;
+                        }
+                    }
+                }
+            }
+        }
+        // 1. ОТРИСОВКА ПЕРВОГО (НИЖНЕГО) БАССЕЙНА
+        if (theIsNight)
+        {
+            g->DrawTrianglesTex(IMAGE_POOL_BASE_NIGHT, aVertArray[0], 150);
+            g->DrawTrianglesTex(IMAGE_POOL_SHADING_NIGHT, aVertArray[1], 150);
+
+            UpdateWaterEffect(g);
+            D3DInterface* anInterface = ((DDImage*)g->mDestImage)->mDDInterface->mD3DInterface;
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+            g->DrawTrianglesTex(mCausticImage, aVertArray[2], 150);
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+        }
+        else
+        {
+            g->DrawTrianglesTex(IMAGE_POOL_BASE, aVertArray[0], 150);
+            g->DrawTrianglesTex(IMAGE_POOL_SHADING, aVertArray[1], 150);
+
+            UpdateWaterEffect(g);
+            D3DInterface* anInterface = ((DDImage*)g->mDestImage)->mDDInterface->mD3DInterface;
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+            g->DrawTrianglesTex(mCausticImage, aVertArray[2], 150);
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+            anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+        }
+
+        UpdateWaterEffect(g);
+        D3DInterface* anInterface = ((DDImage*)g->mDestImage)->mDDInterface->mD3DInterface;
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+        g->DrawTrianglesTex(mCausticImage, aVertArray[2], 150);
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+
+
+        // 2. МОДИФИКАЦИЯ КООРДИНАТ ДЛЯ ВТОРОГО (ВЕРХНЕГО) БАССЕЙНА
+        // Сдвигаем существующую геометрию вверх (например, на 180 пикселей относительно нижней реки)
+        float distanceBetweenPools = 324.0f;
+        for (int layer = 0; layer < 3; layer++) {
+            for (int i = 0; i < 150; i++) {
+                for (int vIndex = 0; vIndex < 3; vIndex++) {
+                    aVertArray[layer][i][vIndex].y -= distanceBetweenPools;
+                }
+            }
+        }
+
+        // 3. ОТРИСОВКА ВТОРОГО (ВЕРХНЕГО) БАССЕЙНА
+        if (theIsNight)
+        {
+            g->DrawTrianglesTex(IMAGE_POOL_BASE_NIGHT, aVertArray[0], 150);
+            g->DrawTrianglesTex(IMAGE_POOL_SHADING_NIGHT, aVertArray[1], 150);
+        }
+        else
+        {
+            g->DrawTrianglesTex(IMAGE_POOL_BASE, aVertArray[0], 150);
+            g->DrawTrianglesTex(IMAGE_POOL_SHADING, aVertArray[1], 150);
+        }
+
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_WRAP), "DrawPool");
+        g->DrawTrianglesTex(mCausticImage, aVertArray[2], 150);
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSU, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+        anInterface->CheckDXError(anInterface->mD3DDevice->SetTextureStageState(0, D3DTEXTURESTAGESTATETYPE::D3DTSS_ADDRESSV, D3DTEXTUREADDRESS::D3DTADDRESS_CLAMP), "DrawPool");
+    }
 }
 
 void PoolEffect::PoolEffectUpdate()
