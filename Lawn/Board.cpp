@@ -625,7 +625,7 @@ void Board::PickZombieWaves()
 				 aGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_2 || aGameMode == GameMode::GAMEMODE_CHALLENGE_POGO_PARTY)
 			mNumWaves = 30;
 		else
-			mNumWaves = 10;
+			mNumWaves = 40;
 	}
 
 	// ====================================================================================================
@@ -840,7 +840,7 @@ void Board::LoadBackgroundImages()
 	{
 	case BackgroundType::BACKGROUND_1_DAY:
 		TodLoadResources("DelayLoad_Background1");
-		if ((mApp->IsAdventureMode() && mLevel <= 4) || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED)
+		if ((mApp->IsAdventureMode() && mLevel <= 4) || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS)
 		{
 			TodLoadResources("DelayLoad_BackgroundUnsodded");
 		}
@@ -1096,7 +1096,8 @@ void Board::PickBackground()
 				mPlantRow[4] = PlantRowType::PLANTROW_DIRT;
 			}
 		}
-		else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED)
+		else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || 
+			     mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS)
 		{
 			mPlantRow[0] = PlantRowType::PLANTROW_DIRT;
 			mPlantRow[4] = PlantRowType::PLANTROW_DIRT;
@@ -1738,7 +1739,7 @@ void Board::InitLawnMowers()
 
 	for (int aRow = 0; aRow < MAX_GRID_SIZE_Y; aRow++)
 	{
-		if ((aGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED && aRow <= 4) || 
+		if (((aGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || aGameMode == GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS) && aRow <= 4) ||
 			(mApp->IsAdventureMode() && mLevel == 35) ||   // 这里原版没有对于行的判断，故冒险模式 4-5 关卡有 6 行小推车
 			(!mApp->IsScaryPotterLevel() && mPlantRow[aRow] != PlantRowType::PLANTROW_DIRT))  // 除冒险模式 4-5 关卡外的破罐者模式关卡无小推车
 		{
@@ -2630,7 +2631,7 @@ bool Board::RowCanHaveZombieType(int theRow, ZombieType theZombieType)
 		return false;
 	}
 
-	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED && mPlantRow[theRow] == PlantRowType::PLANTROW_DIRT && mCurrentWave < 5)
+	if ((mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS) && mPlantRow[theRow] == PlantRowType::PLANTROW_DIRT && mCurrentWave < 5)
 	{
 		return false;  // 无草皮之地关卡，无草皮的行在前 5 波不刷出僵尸
 	}
@@ -6077,7 +6078,7 @@ bool Board::RowCanHaveZombies(int theRow)
 	if (theRow < 0 || theRow >= MAX_GRID_SIZE_Y)
 		return false;
 
-	return (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED && theRow <= 4) || mPlantRow[theRow] != PlantRowType::PLANTROW_DIRT;
+	return ((mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS) && theRow <= 4) || mPlantRow[theRow] != PlantRowType::PLANTROW_DIRT;
 }
 
 int Board::GetIceZPos(int theRow)
@@ -6143,7 +6144,7 @@ void Board::DrawBackdrop(Graphics* g)
 		Rect aSrcRect(0, 0, aWidth, Sexy::IMAGE_SOD1ROW->GetHeight());
 		g->DrawImage(Sexy::IMAGE_SOD1ROW, 239 - BOARD_OFFSET, 265, aSrcRect);
 	}
-	else if (((mLevel == 2 || mLevel == 3) && mApp->IsFirstTimeAdventureMode()) || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED)
+	else if (((mLevel == 2 || mLevel == 3) && mApp->IsFirstTimeAdventureMode()) || (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_UNSODDED_PLUS))
 	{
 		g->DrawImage(Sexy::IMAGE_BACKGROUND1UNSODDED, -BOARD_OFFSET, 0);
 		g->DrawImage(Sexy::IMAGE_SOD1ROW, 239 - BOARD_OFFSET, 265);
@@ -8481,7 +8482,6 @@ void Board::KeyChar(SexyChar theChar)
 		}
 		else if (mApp->IsIZombieLevel())
 		{
-			mApp->mEasyPlantingCheat = true;
 			for (int i = 0; i < 5; i++)
 			{
 				mChallenge->IZombiePlaceZombie(ZombieType::ZOMBIE_FOOTBALL, 6, i);
@@ -8489,7 +8489,6 @@ void Board::KeyChar(SexyChar theChar)
 		}
 		else
 		{
-			mApp->mEasyPlantingCheat = true;
 			for (int y = 0; y < MAX_GRID_SIZE_Y; ++y)
 			{
 				for (int x = 0; x < MAX_GRID_SIZE_X; ++x)
@@ -8572,6 +8571,11 @@ void Board::KeyChar(SexyChar theChar)
 	if (theChar == _S('o'))
 	{
 		AddZombie(ZombieType::ZOMBIE_FOOTBALL, Zombie::ZOMBIE_WAVE_DEBUG);
+		return;
+	}
+	if (theChar == _S('A'))
+	{
+		AddZombie(ZombieType::ZOMBIE_GIGA_FOOTBALL, Zombie::ZOMBIE_WAVE_DEBUG);
 		return;
 	}
 	if (theChar == _S('s'))
